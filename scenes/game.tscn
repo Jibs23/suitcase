@@ -9,10 +9,10 @@
 
 [node name="Board" parent="." instance=ExtResource("2_qbsmt")]
 
-[node name="Node2D" type="Node2D" parent="."]
+[node name="ItemManager" type="Node2D" parent="."]
 script = ExtResource("1_lnu2h")
 
-[node name="Item2D" parent="Node2D" instance=ExtResource("1_ibkli")]
+[node name="Item2D" parent="ItemManager" instance=ExtResource("1_ibkli")]
 
 [node name="Audio" type="Node" parent="."]
 script = ExtResource("3_iywne")

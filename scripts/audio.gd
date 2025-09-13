@@ -10,6 +10,7 @@ var sfx_library: Dictionary = {
 	"error": preload("res://Audio/sfx/error.wav"),
 }
 
+## Library of music tracks, refference name and resource path.
 var music_library: Dictionary = {
 	#"example_music": preload("res://Audio/music/example.wav") --- IGNORE ---
 }
