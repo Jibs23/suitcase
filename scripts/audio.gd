@@ -8,6 +8,7 @@ var sfx_library: Dictionary = {
 	"item_pickup": preload("res://Audio/sfx/item_pickup.wav"),
 	"item_drop": preload("res://Audio/sfx/item_drop.wav"),
 	"error": preload("res://Audio/sfx/error.wav"),
+	"paper": preload("res://Audio/sfx/paper.wav")
 }
 
 ## Library of music tracks, refference name and resource path.
