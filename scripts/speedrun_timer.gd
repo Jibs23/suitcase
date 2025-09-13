@@ -13,6 +13,11 @@ func start_timer() -> void:
 func stop_timer() -> void:
 	time_is_running = false
 
+func reset_timer() -> void:
+	timer = 0.0
+	text = "0.00"
+	visible = false
+
 func _process(delta: float) -> void:
 	if time_is_running:
 		timer += 1*delta

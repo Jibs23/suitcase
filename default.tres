@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://sha0qc2gq37y"]
+
+[ext_resource type="FontFile" uid="uid://lt457yq81jr5" path="res://assets/Fonts/medieval_sharp/MedievalSharp-Bold.ttf" id="1_frq1j"]
+[ext_resource type="FontFile" uid="uid://eoh28dprn3jt" path="res://assets/Fonts/medieval_sharp/MedievalSharp-Book.ttf" id="1_nixot"]
+
+[resource]
+Button/fonts/font = ExtResource("1_frq1j")
+Label/fonts/font = ExtResource("1_nixot")

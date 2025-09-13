@@ -11,10 +11,17 @@ var drag_preview_item: ItemResource
 var drag_offset: Vector2
 var mouse_pos: Vector2
 
+var speedrun_timer: Label 
+
+signal start_timer
+signal stop_timer
+signal reset_timer
+
 func _init() -> void:
 	Logic.board = self
 
 func _ready() -> void:
+	speedrun_timer = $Timer
 	inventory_grid = _create_grid(8, 12, Vector2(100, 150))
 	dropin_grid = _create_grid(10, 10, Vector2(700, 120))
 	z_index = 10
