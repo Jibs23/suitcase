@@ -4,5 +4,6 @@
 [ext_resource type="FontFile" uid="uid://eoh28dprn3jt" path="res://assets/Fonts/medieval_sharp/MedievalSharp-Book.ttf" id="1_nixot"]
 
 [resource]
+default_font_size = 30
 Button/fonts/font = ExtResource("1_frq1j")
 Label/fonts/font = ExtResource("1_nixot")
