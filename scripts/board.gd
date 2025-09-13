@@ -20,11 +20,11 @@ func _ready() -> void:
 	z_index = 10
 
 	# Create items with 2x2 scaling for each logical cell (simpler shape definitions)
-	inventory_grid.add_item("Coins", Vector2(4, 4), _create_item("Coins", _make_2x2_square(), "res://assets/1x1_coins.png"))
-	inventory_grid.add_item("FireJar", Vector2(6, 4), _create_item("FireJar", _make_2x2_square(), "res://assets/1x1_fireJar.png"))
-	inventory_grid.add_item("Dagger", Vector2(1, 2), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/3x2_dagger.png"))
-	inventory_grid.add_item("Pouches", Vector2(2, 6), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/3x2_pouches.png"))
-	inventory_grid.add_item("Mushrooms", Vector2(4, 6), _create_item("Mushrooms", _make_2x2_L(), "res://assets/2x2_L_mushrooms.png"))
+	inventory_grid.add_item("Coins", Vector2(4, 4), _create_item("Coins", _make_2x2_square(), "res://assets/PaintedAssets/1x1_coins.png"))
+	inventory_grid.add_item("FireJar", Vector2(6, 4), _create_item("FireJar", _make_2x2_square(), "res://assets/PaintedAssets/1x1_fireJar.png"))
+	inventory_grid.add_item("Dagger", Vector2(1, 2), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/PaintedAssets/3x2_dagger.png"))
+	inventory_grid.add_item("Pouches", Vector2(2, 6), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/PaintedAssets/3x2_pouches.png"))
+	inventory_grid.add_item("Mushrooms", Vector2(4, 6), _create_item("Mushrooms", _make_2x2_L(), "res://assets/PaintedAssets/2x2_L_mushrooms.png"))
 
 func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
 	var grid = Grid.new()
