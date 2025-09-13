@@ -79,6 +79,8 @@ func _rotate_item_at_position(pos: Vector2) -> void:
 
 func _start_drag(pos: Vector2) -> void:
 	var grids = [inventory_grid, dropin_grid]
+	#TODO: fix so sound only plays when you actually pick up an item.
+	#TODO: Make speedrun timer start and stop when picking up item.
 	Logic.audio_manager.play_sound("item_pickup", true)
 	for grid in grids:
 		var drag_data = grid.try_start_drag(pos)

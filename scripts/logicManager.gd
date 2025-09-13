@@ -5,6 +5,7 @@ var item_manager: Node2D
 var audio_manager: Node
 var board: Node2D
 var menu: Control
+var speedrun_timer: Label
 
 ## Returns true if an item is currently selected.
 func is_item_selected() -> bool:
