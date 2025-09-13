@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://cqvp1c2srca8m"]
+[gd_scene load_steps=4 format=3 uid="uid://cqvp1c2srca8m"]
 
 [ext_resource type="Script" uid="uid://d0t8mkteq33fi" path="res://scripts/menu.gd" id="1_xdvgc"]
+[ext_resource type="Texture2D" uid="uid://b5eknpt37vh8t" path="res://assets/start.svg" id="3_11y2r"]
 
 [sub_resource type="Theme" id="Theme_lumdm"]
 
@@ -15,26 +16,29 @@ script = ExtResource("1_xdvgc")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 offset_left = -206.0
-offset_top = -75.0
+offset_top = -329.0
 offset_right = 206.0
-offset_bottom = 75.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+mouse_default_cursor_shape = 2
 alignment = 1
 
 [node name="Start" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Quit")
 focus_neighbor_bottom = NodePath("../Quit")
-text = "START"
+icon = ExtResource("3_11y2r")
+flat = true
+icon_alignment = 1
 
 [node name="Quit" type="Button" parent="VBoxContainer"]
+visible = false
 layout_mode = 2
 focus_neighbor_top = NodePath("../Start")
 focus_neighbor_bottom = NodePath("../Start")
