@@ -63,7 +63,7 @@ func _rotate_item_at_position(pos: Vector2) -> void:
 			Logic.audio_manager.play_sound("rotate_cw")
 			return
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	print("Update called", inventory_grid.items)
 
 func _start_drag(pos: Vector2) -> void:
