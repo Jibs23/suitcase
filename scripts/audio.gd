@@ -39,7 +39,7 @@ func play_sound(sound:String,random_pitch:bool) -> void:
 	streamPlayer.queue_free()
 
 func play_music_random():
-	var random_song = randi_range(1, music_library.size()+1)
+	var random_song = randi_range(1, music_library.size())
 	play_music(random_song)
 
 func play_music(track:int) -> void:
