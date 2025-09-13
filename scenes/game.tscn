@@ -1,33 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cgtlx0m762ciw"]
 
-[gd_scene load_steps=6 format=3 uid="uid://b1cityttcd61c"]
+[ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="1_ibkli"]
+[ext_resource type="PackedScene" uid="uid://bj8cwxrl7ihaw" path="res://scenes/Board.tscn" id="2_qbsmt"]
 
-[ext_resource type="Script" uid="uid://ceyhc5cm3bxwj" path="res://scripts/item_manager.gd" id="1_e2o6t"]
-[ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="2_e2o6t"]
-[ext_resource type="Script" uid="uid://b7d8wfejb3t28" path="res://scripts/board.gd" id="3_lnu2h"]
-[ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="4_lbhrr"]
-[ext_resource type="Script" uid="uid://dviipql5dqpw7" path="res://scenes/board_sprite.gd" id="5_iywne"]
-[gd_scene load_steps=4 format=3 uid="uid://bb225rj6fnttb"]
-[ext_resource type="Script" uid="uid://ceyhc5cm3bxwj" path="res://scripts/item_manager.gd" id="1_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="2_lbhrr"]
-[ext_resource type="Script" uid="uid://cdxs3ss5kc4uw" path="res://scripts/audio.gd" id="3_iywne"]
+[node name="Game" type="Node2D"]
 
-[node name="Game" type="Node"]
+[node name="Item2D" parent="." instance=ExtResource("1_ibkli")]
 
-[node name="Level" type="Node2D" parent="."]
-
-[node name="ItemManager" type="Node2D" parent="Level"]
-script = ExtResource("1_lnu2h")
-
-[node name="Item2D" parent="Level/ItemManager" instance=ExtResource("2_lbhrr")]
-
-[node name="Board" type="Node2D" parent="Level"]
-script = ExtResource("3_lnu2h")
-
-[node name="Sprite2D" type="Sprite2D" parent="Level/Board"]
-z_index = -1
-position = Vector2(952.5, 537.5)
-scale = Vector2(0.496094, 0.49213)
-texture = ExtResource("4_lbhrr")
-script = ExtResource("5_iywne")
-[node name="Audio" type="Node" parent="."]
-script = ExtResource("3_iywne")
+[node name="Board" parent="." instance=ExtResource("2_qbsmt")]
