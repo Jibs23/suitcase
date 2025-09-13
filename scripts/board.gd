@@ -15,12 +15,15 @@ func _init() -> void:
 	Logic.board = self
 
 func _ready() -> void:
-	inventory_grid = _create_grid(8, 12, Vector2(120, 150))
+	inventory_grid = _create_grid(8, 12, Vector2(100, 150))
 	dropin_grid = _create_grid(10, 10, Vector2(700, 120))
 	z_index = 10
 
-	inventory_grid.add_item(Vector2(1, 1), _create_item("L-Shape", [Vector2(0,0), Vector2(1,0), Vector2(0,-1)], "res://assets/2x2_L_mushrooms.png"))
-	inventory_grid.add_item(Vector2(2, 2), _create_item("T-Shape", [Vector2(1,0), Vector2(0,1), Vector2(1,1), Vector2(2,1)], "res://assets/icon.svg"))
+	# inventory_grid.add_item(Vector2(2, 2), _create_item("Coins", [Vector2(0,0)], "res://assets/1x1_coins.png"))
+	inventory_grid.add_item(Vector2(3, 2), _create_item("FireJar", [Vector2(0,0)], "res://assets/1x1_fireJar.png"))
+	inventory_grid.add_item(Vector2(3, 1), _create_item("Dagger", [Vector2(0,-1), Vector2(1,-1),Vector2(2,-1), Vector2(2,0)], "res://assets/3x2_dagger.png"))
+	# inventory_grid.add_item(Vector2(1, 3), _create_item("Pouches", [Vector2(0,1), Vector2(1,1),Vector2(1,0), Vector2(2,1)], "res://assets/3x2_pouches.png"))
+	# inventory_grid.add_item(Vector2(2, 3), _create_item("Mushrooms", [Vector2(0,0), Vector2(1,0), Vector2(0,-1)], "res://assets/2x2_L_mushrooms.png"))
 
 func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
 	var grid = Grid.new()
@@ -46,6 +49,7 @@ func _input(event: InputEvent) -> void:
 			_end_drag(event.position)
 	elif event is InputEventKey and event.keycode == KEY_U and event.pressed:
 		_rotate_item_at_position(mouse_pos)
+
 	elif event is InputEventMouseMotion:
 		mouse_pos = event.position
 		if is_dragging:
@@ -58,6 +62,9 @@ func _rotate_item_at_position(pos: Vector2) -> void:
 			queue_redraw()
 			Logic.audio_manager.play_sound("rotate_cw")
 			return
+
+func _process(delta: float) -> void:
+	print("Update called", inventory_grid.items)
 
 func _start_drag(pos: Vector2) -> void:
 	var grids = [inventory_grid, dropin_grid]
@@ -110,7 +117,6 @@ func _draw_drag_preview() -> void:
 	# Draw dragged item
 	var color = Color.RED if !can_place else Color.GREEN
 	color.a = 0.1
-	_draw_item_shape(drag_pos, drag_preview_item.get_current_shape(), color)
 
 	# Draw sprite if available
 	if drag_preview_item.sprite_texture:
@@ -135,10 +141,12 @@ func _draw_placement_preview(drag_pos: Vector2, can_place: bool) -> void:
 			return
 
 func _draw_item_shape(pos: Vector2, shape: PackedVector2Array, color: Color) -> void:
+	var item_scale_factor = 2  # Match the grid's scaling
 	for cell in shape:
-		var cell_pos = pos + Vector2(cell * GRID_CELL_SIZE)
-		draw_rect(Rect2(cell_pos, Vector2(GRID_CELL_SIZE, GRID_CELL_SIZE)), color, true)
-		draw_rect(Rect2(cell_pos, Vector2(GRID_CELL_SIZE, GRID_CELL_SIZE)), Color.WHITE, false, 2)
+		var cell_pos = pos + Vector2(cell * GRID_CELL_SIZE * item_scale_factor)
+		var scaled_size = GRID_CELL_SIZE * item_scale_factor
+		draw_rect(Rect2(cell_pos, Vector2(scaled_size, scaled_size)), color, true)
+		draw_rect(Rect2(cell_pos, Vector2(scaled_size, scaled_size)), Color.WHITE, false, 2)
 
 func _draw_item_sprite(pos: Vector2, can_place: bool) -> void:
 	var texture = drag_preview_item.sprite_texture
@@ -156,13 +164,14 @@ func _draw_item_sprite(pos: Vector2, can_place: bool) -> void:
 		max_x = max(max_x, cell.x)
 		max_y = max(max_y, cell.y)
 
-	# Calculate sprite area covering the entire shape
-	var shape_width = (max_x - min_x + 1) * GRID_CELL_SIZE
-	var shape_height = (max_y - min_y + 1) * GRID_CELL_SIZE
+	# Calculate sprite area covering the entire shape (accounting for scaling)
+	var item_scale_factor = 2  # Match the grid's scaling
+	var shape_width = (max_x - min_x + 1) * GRID_CELL_SIZE * item_scale_factor
+	var shape_height = (max_y - min_y + 1) * GRID_CELL_SIZE * item_scale_factor
 	var sprite_area_size = Vector2(shape_width, shape_height)
 
-	# Position sprite at the top-left of the bounding box
-	var sprite_pos = pos + Vector2(min_x, min_y) * GRID_CELL_SIZE
+	# Position sprite at the top-left of the bounding box (accounting for scaling)
+	var sprite_pos = pos + Vector2(min_x, min_y) * GRID_CELL_SIZE * item_scale_factor
 
 	# Scale sprite to fit the entire shape area
 	var texture_size = texture.get_size()
