@@ -7,16 +7,18 @@ var GRID_CELL_SIZE := 32
 
 # Drag and drop variables
 var dragging_item: Dictionary = {}
+
 var drag_offset: Vector2 = Vector2.ZERO
 var is_dragging: bool = false
 var drag_preview_shape: PackedVector2Array
 var mouse_pos: Vector2
 
+
 func _ready() -> void:
 	# Setup grids
 	inventory_grid = Grid.new()
-	inventory_grid.width = 3
-	inventory_grid.height = 10
+	inventory_grid.width = 8
+	inventory_grid.height = 12
 	inventory_grid.cell_size = GRID_CELL_SIZE
 	inventory_grid.offset = Vector2(0, 0)
 
@@ -24,12 +26,16 @@ func _ready() -> void:
 	dropin_grid.width = 10
 	dropin_grid.height = 10
 	dropin_grid.cell_size = GRID_CELL_SIZE
-	dropin_grid.offset = Vector2(200, 0)
+	dropin_grid.offset = Vector2(1500, 0)
 
-	# Example items
-	var shape = PackedVector2Array([Vector2(0,0), Vector2(1,0), Vector2(0,1)]) # L-shape
+	# Set this node's z-index to be above sprites
+	z_index = 1
+
+	# Example items"
+	var shape = PackedVector2Array([Vector2(0,0), Vector2(1,0), Vector2(0,1)])
 	dropin_grid.add_item(Vector2(1, 1), shape)
 	inventory_grid.add_item(Vector2(2, 2), shape)
+
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -42,6 +48,33 @@ func _input(event: InputEvent) -> void:
 		mouse_pos = event.position
 		if is_dragging:
 			queue_redraw()
+
+
+
+func _resize_grids() -> void:
+	var screen_size = get_viewport_rect().size
+
+	# Example: inventory on left, dropin on right
+	# Both should fit vertically, so base cell size on height
+	var max_rows = max(inventory_grid.height, dropin_grid.height)
+	var cell_size = floor(screen_size.y / max_rows)
+
+	inventory_grid.cell_size = cell_size
+	dropin_grid.cell_size = cell_size
+
+	# Inventory flush left
+	inventory_grid.offset = Vector2(0, 0)
+
+	# Dropin placed to the right, with margin
+	var inv_width_px = inventory_grid.width * cell_size
+	var drop_width_px = dropin_grid.width * cell_size
+	var total_width = inv_width_px + drop_width_px
+
+	# Center them horizontally
+	var start_x = (screen_size.x - total_width) / 2.0
+	inventory_grid.offset.x = start_x
+	dropin_grid.offset.x = start_x + inv_width_px
+
 
 func _start_drag(click_pos: Vector2) -> void:
 	# Check inventory grid first
@@ -119,6 +152,7 @@ func _draw() -> void:
 				var world_pos = dropin_grid.grid_to_world(grid_pos)
 				draw_rect(Rect2(world_pos, Vector2(GRID_CELL_SIZE, GRID_CELL_SIZE)), Color(0, 1, 0, 0.5), true)
 				draw_rect(Rect2(world_pos, Vector2(GRID_CELL_SIZE, GRID_CELL_SIZE)), Color.WHITE, false, 2)
+
 
 		if inventory_grid.can_place_item(target_pos_inventory, drag_preview_shape):
 			can_place_in_inventory = true

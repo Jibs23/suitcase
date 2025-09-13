@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://b1cityttcd61c"]
+[gd_scene load_steps=6 format=3 uid="uid://b1cityttcd61c"]
 
 [ext_resource type="Script" uid="uid://ceyhc5cm3bxwj" path="res://scripts/item_manager.gd" id="1_e2o6t"]
 [ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="2_e2o6t"]
 [ext_resource type="Script" uid="uid://b7d8wfejb3t28" path="res://scripts/board.gd" id="3_lnu2h"]
+[ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="4_lbhrr"]
+[ext_resource type="Script" uid="uid://dviipql5dqpw7" path="res://scenes/board_sprite.gd" id="5_iywne"]
 
 [node name="Game" type="Node"]
 
@@ -16,3 +18,10 @@ position = Vector2(295, 160)
 
 [node name="Board" type="Node2D" parent="Level"]
 script = ExtResource("3_lnu2h")
+
+[node name="Sprite2D" type="Sprite2D" parent="Level/Board"]
+z_index = -1
+position = Vector2(952.5, 537.5)
+scale = Vector2(0.496094, 0.49213)
+texture = ExtResource("4_lbhrr")
+script = ExtResource("5_iywne")

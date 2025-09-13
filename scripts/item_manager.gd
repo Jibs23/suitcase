@@ -24,4 +24,3 @@ func _process(_delta):
 	elif selected_item.position != get_viewport().get_mouse_position():
 		selected_item.position = get_viewport().get_mouse_position()
 		#print(selected_item, get_viewport().get_mouse_position())
-
