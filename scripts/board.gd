@@ -2,7 +2,7 @@ extends Node2D
 
 var inventory_grid: Grid
 var dropin_grid: Grid
-var GRID_CELL_SIZE := 32
+var GRID_CELL_SIZE := 44
 
 # Drag variables
 var dragging_item: Dictionary = {}
@@ -15,14 +15,14 @@ func _init() -> void:
 	Logic.board = self
 
 func _ready() -> void:
-	inventory_grid = _create_grid(8, 12, Vector2(100, 150))  # Double the grid size for 2x effect
-	dropin_grid = _create_grid(10, 10, Vector2(700, 120))      # Double the grid size for 2x effect
+	inventory_grid = _create_grid(8, 12, Vector2(100, 120))  # Double the grid size for 2x effect
+	dropin_grid = _create_grid(10, 10, Vector2(700, 140))      # Double the grid size for 2x effect
 	z_index = 10
 
 	# Create items with 2x2 scaling for each logical cell (simpler shape definitions)
 	inventory_grid.add_item("Coins", Vector2(4, 4), _create_item("Coins", _make_2x2_square(), "res://assets/1x1_coins.png"))
 	inventory_grid.add_item("FireJar", Vector2(6, 4), _create_item("FireJar", _make_2x2_square(), "res://assets/1x1_fireJar.png"))
-	inventory_grid.add_item("Dagger", Vector2(6, 2), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/3x2_dagger.png"))
+	inventory_grid.add_item("Dagger", Vector2(1, 2), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/3x2_dagger.png"))
 	inventory_grid.add_item("Pouches", Vector2(2, 6), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/3x2_pouches.png"))
 	inventory_grid.add_item("Mushrooms", Vector2(4, 6), _create_item("Mushrooms", _make_2x2_L(), "res://assets/2x2_L_mushrooms.png"))
 
@@ -112,7 +112,7 @@ func _end_drag(pos: Vector2) -> void:
 	var target_pos = pos - drag_offset
 	var grids = [dropin_grid, inventory_grid]  # Try dropin first
 
-	
+
 	for grid in grids:
 		var placed_id = grid.try_place_item(target_pos, dragging_item.item_resource, dragging_item.id)
 		if placed_id != "":

@@ -2,12 +2,12 @@ extends Node
 
 ## Library of sound effects, refference name and resource path.
 var sfx_library: Dictionary = {
-	"rotate_cw": preload("res://Audio/sfx/item_rotate_cw.wav"),
-	"rotate_ccw": preload("res://Audio/sfx/item_rotate_ccw.wav"),
-	"item_pickup": preload("res://Audio/sfx/item_pickup.wav"),
-	"item_drop": preload("res://Audio/sfx/item_drop.wav"),
-	"error": preload("res://Audio/sfx/error.wav"),
-	"paper": preload("res://Audio/sfx/paper.wav")
+	"rotate_cw": preload("res://Audio/SFX/item_rotate_cw.wav"),
+	"rotate_ccw": preload("res://Audio/SFX/item_rotate_ccw.wav"),
+	"item_pickup": preload("res://Audio/SFX/item_pickup.wav"),
+	"item_drop": preload("res://Audio/SFX/item_drop.wav"),
+	"error": preload("res://Audio/SFX/error.wav"),
+	"paper": preload("res://Audio/SFX/paper.wav")
 }
 
 var music_player: AudioStreamPlayer
