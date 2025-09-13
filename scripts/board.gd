@@ -19,11 +19,11 @@ func _ready() -> void:
 	dropin_grid = _create_grid(10, 10, Vector2(700, 120))
 	z_index = 10
 
-	# inventory_grid.add_item(Vector2(2, 2), _create_item("Coins", [Vector2(0,0)], "res://assets/1x1_coins.png"))
-	inventory_grid.add_item(Vector2(3, 2), _create_item("FireJar", [Vector2(0,0)], "res://assets/1x1_fireJar.png"))
-	inventory_grid.add_item(Vector2(3, 1), _create_item("Dagger", [Vector2(0,-1), Vector2(1,-1),Vector2(2,-1), Vector2(2,0)], "res://assets/3x2_dagger.png"))
-	# inventory_grid.add_item(Vector2(1, 3), _create_item("Pouches", [Vector2(0,1), Vector2(1,1),Vector2(1,0), Vector2(2,1)], "res://assets/3x2_pouches.png"))
-	# inventory_grid.add_item(Vector2(2, 3), _create_item("Mushrooms", [Vector2(0,0), Vector2(1,0), Vector2(0,-1)], "res://assets/2x2_L_mushrooms.png"))
+	inventory_grid.add_item("Coins", Vector2(2, 2), _create_item("Coins", [Vector2(0,0)], "res://assets/1x1_coins.png"))
+	inventory_grid.add_item("FireJar", Vector2(3, 2), _create_item("FireJar", [Vector2(0,0)], "res://assets/1x1_fireJar.png"))
+	inventory_grid.add_item("Dagger", Vector2(3, 1), _create_item("Dagger", [Vector2(0,-1), Vector2(1,-1),Vector2(2,-1), Vector2(2,0)], "res://assets/3x2_dagger.png"))
+	inventory_grid.add_item("Pouches", Vector2(1, 3), _create_item("Pouches", [Vector2(0,1), Vector2(1,1),Vector2(1,0), Vector2(2,1)], "res://assets/3x2_pouches.png"))
+	inventory_grid.add_item("Mushrooms", Vector2(2, 3), _create_item("Mushrooms", [Vector2(0,0), Vector2(1,0), Vector2(0,-1)], "res://assets/2x2_L_mushrooms.png"))
 
 func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
 	var grid = Grid.new()
@@ -63,8 +63,6 @@ func _rotate_item_at_position(pos: Vector2) -> void:
 			Logic.audio_manager.play_sound("rotate_cw")
 			return
 
-func _process(_delta: float) -> void:
-	print("Update called", inventory_grid.items)
 
 func _start_drag(pos: Vector2) -> void:
 	var grids = [inventory_grid, dropin_grid]
@@ -75,7 +73,7 @@ func _start_drag(pos: Vector2) -> void:
 			dragging_item = drag_data
 			drag_preview_item = drag_data.item_resource
 			drag_offset = drag_data.drag_offset
-			grid.remove_item(drag_data.position)
+			grid.remove_item(drag_data.id)
 			is_dragging = true
 			queue_redraw()
 			return
@@ -89,12 +87,13 @@ func _end_drag(pos: Vector2) -> void:
 
 	Logic.audio_manager.play_sound("item_drop", true)
 	for grid in grids:
-		if grid.try_place_item(target_pos, dragging_item.item_resource):
+		var placed_id = grid.try_place_item(target_pos, dragging_item.item_resource, dragging_item.id)
+		if placed_id != "":
 			_reset_drag()
 			return
 
 	# If couldn't place anywhere, return to original position
-	dragging_item.grid.add_item(dragging_item.position, dragging_item.item_resource)
+	dragging_item.grid.add_item(dragging_item.id, dragging_item.position, dragging_item.item_resource)
 	_reset_drag()
 
 func _reset_drag() -> void:
