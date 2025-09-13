@@ -61,20 +61,20 @@ func _input(event: InputEvent) -> void:
 		else:
 			_end_drag(event.position)
 	elif event is InputEventKey and event.keycode == KEY_U and event.pressed:
-		_rotate_item_at_position(mouse_pos)
+		_rotate_dragging_item(dragging_item)
 
 	elif event is InputEventMouseMotion:
 		mouse_pos = event.position
 		if is_dragging:
 			queue_redraw()
 
-func _rotate_item_at_position(pos: Vector2) -> void:
-	var grids = [inventory_grid, dropin_grid]
-	for grid in grids:
-		if grid.try_rotate_item_at_position(pos):
-			queue_redraw()
-			Logic.audio_manager.play_sound("rotate_cw")
-			return
+func _rotate_dragging_item(item: Dictionary) -> void:
+	if not is_dragging:
+		return
+	item.item_resource.rotate_clockwise()
+	Logic.audio_manager.play_sound("rotate_cw", true)
+	queue_redraw()
+
 
 
 func _start_drag(pos: Vector2) -> void:
@@ -166,7 +166,30 @@ func _draw_item_sprite(pos: Vector2, can_place: bool) -> void:
 	var texture = drag_preview_item.sprite_texture
 	var shape = drag_preview_item.get_current_shape()
 
-	# Calculate the bounding box of the shape
+	# Calculate the bounding box of the ORIGINAL shape for consistent scaling
+	var original_shape = drag_preview_item.base_shape
+	var original_min_x = 0
+	var original_min_y = 0
+	var original_max_x = 0
+	var original_max_y = 0
+
+	for cell in original_shape:
+		original_min_x = min(original_min_x, cell.x)
+		original_min_y = min(original_min_y, cell.y)
+		original_max_x = max(original_max_x, cell.x)
+		original_max_y = max(original_max_y, cell.y)
+
+	# Calculate sprite area based on original shape (for consistent scaling)
+	var original_shape_width = (original_max_x - original_min_x + 1) * GRID_CELL_SIZE
+	var original_shape_height = (original_max_y - original_min_y + 1) * GRID_CELL_SIZE
+	var original_sprite_area_size = Vector2(original_shape_width, original_shape_height)
+
+	# Scale sprite to fit the original shape area (maintains consistent size)
+	var texture_size = texture.get_size()
+	var scale_factor = min(original_sprite_area_size.x / texture_size.x, original_sprite_area_size.y / texture_size.y)
+	var scaled_size = texture_size * scale_factor
+
+	# Calculate the bounding box of the CURRENT rotated shape for positioning
 	var min_x = 0
 	var min_y = 0
 	var max_x = 0
@@ -178,28 +201,22 @@ func _draw_item_sprite(pos: Vector2, can_place: bool) -> void:
 		max_x = max(max_x, cell.x)
 		max_y = max(max_y, cell.y)
 
-	# Calculate sprite area covering the entire shape (no scaling needed)
-	var shape_width = (max_x - min_x + 1) * GRID_CELL_SIZE
-	var shape_height = (max_y - min_y + 1) * GRID_CELL_SIZE
-	var sprite_area_size = Vector2(shape_width, shape_height)
+	# Calculate current shape area for centering
+	var current_shape_width = (max_x - min_x + 1) * GRID_CELL_SIZE
+	var current_shape_height = (max_y - min_y + 1) * GRID_CELL_SIZE
+	var current_sprite_area_size = Vector2(current_shape_width, current_shape_height)
 
-	# Position sprite at the top-left of the bounding box
+	# Position sprite at the current shape position
 	var sprite_pos = pos + Vector2(min_x, min_y) * GRID_CELL_SIZE
 
-	# Scale sprite to fit the entire shape area
-	var texture_size = texture.get_size()
-	var scale_factor = min(sprite_area_size.x / texture_size.x, sprite_area_size.y / texture_size.y)
-	var scaled_size = texture_size * scale_factor
+	# Center the sprite within the current shape area
+	var centered_pos = sprite_pos + (current_sprite_area_size - scaled_size) * 0.5
 
-	# Center the sprite within the shape area
-	var centered_pos = sprite_pos + (sprite_area_size - scaled_size) * 0.5
-
-	var sprite_transform = Transform2D()
-	sprite_transform = sprite_transform.rotated(deg_to_rad(drag_preview_item.rotation_degrees))
-	sprite_transform.origin = centered_pos + scaled_size * 0.5
+	# Calculate sprite center for rotation
+	var sprite_center = centered_pos + scaled_size * 0.5
 
 	var color = Color.RED if not can_place else Color(1, 1, 1, 0.8)
 
-	draw_set_transform(sprite_transform.origin, sprite_transform.get_rotation(), Vector2.ONE)
+	draw_set_transform(sprite_center, deg_to_rad(drag_preview_item.rotation_degrees), Vector2.ONE)
 	draw_texture_rect(texture, Rect2(-scaled_size * 0.5, scaled_size), false, color)
 	draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
