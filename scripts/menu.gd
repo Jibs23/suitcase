@@ -1,11 +1,20 @@
 extends Control
 
-#var game_scene: PackedScene = preload("insert scene path here!!")
+func _init():
+	Logic.menu = self
 
 func _on_start_pressed() -> void:
-	pass # Replace with function body.
-
+	LevelManager.load_level(0)
 
 func _on_quit_pressed() -> void:
 	print("Quitting game...")
 	get_tree().quit()
+
+func hide_menu() -> void:
+	visible = false
+
+func show_menu() -> void:
+	visible = true
+
+func toggle_menu() -> void:
+	visible = !visible
