@@ -19,7 +19,7 @@ func _ready() -> void:
 	dropin_grid = _create_grid(10, 10, Vector2(700, 120))
 	z_index = 10
 
-	inventory_grid.add_item(Vector2(1, 1), _create_item("L-Shape", [Vector2(0,0), Vector2(1,0), Vector2(0,1)], "res://assets/inventory.png"))
+	inventory_grid.add_item(Vector2(1, 1), _create_item("L-Shape", [Vector2(0,0), Vector2(1,0), Vector2(0,-1)], "res://assets/2x2_L_mushrooms.png"))
 	inventory_grid.add_item(Vector2(2, 2), _create_item("T-Shape", [Vector2(1,0), Vector2(0,1), Vector2(1,1), Vector2(2,1)], "res://assets/icon.svg"))
 
 func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
