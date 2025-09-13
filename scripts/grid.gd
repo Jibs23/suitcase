@@ -7,14 +7,61 @@ class_name Grid
 @export var cell_size: int
 @export var offset: Vector2
 
+
+
 var items: Dictionary = {} # Dictionary[Id, ItemResource]
 var next_item_id: int = 1  # Counter for generating unique IDs
+var all_cells_occupied: bool = false
+
+func is_full() -> bool:
+	for item in items:
+		var shape = item.item_resource.get_current_shape()
+
+		for cell in shape:
+			var occupied_pos = item.position + Vector2(cell)
+			if occupied_pos.x < 0 or occupied_pos.x >= width or occupied_pos.y < 0 or occupied_pos.y >= height:
+				return false
+			if items.has(occupied_pos):
+				return false
+	return true
+
+func count_occupied_cells() -> int:
+	var occupied_cells = {}
+	var total_occupied = 0
+
+
+	for key in items:
+		var item = items[key]
+		var item_pos = item.position
+		var item_resource: ItemResource = item.item_resource
+		var shape = item_resource.get_current_shape()
+	# 	var item_pos = item.position
+	# 	var item_resource: ItemResource = item.item_resource
+	# 	var shape = item_resource.get_current_shape()
+
+		for cell in shape:
+			var occupied_pos = item_pos + Vector2(cell)
+			# Only count cells that are within bounds
+			if occupied_pos.x >= 0 and occupied_pos.x < width and occupied_pos.y >= 0 and occupied_pos.y < height:
+				# Use a unique key for each position to avoid double counting
+				var pos_key = str(occupied_pos.x) + "," + str(occupied_pos.y)
+				if not occupied_cells.has(pos_key):
+					occupied_cells[pos_key] = true
+					total_occupied += 1
+
+	return total_occupied
 
 func add_item(id: String, pos: Vector2, item_resource: ItemResource) -> void:
 	items[id] = {
 		"item_resource": item_resource,
 		"position": pos
 	}
+	var occupied_cells = count_occupied_cells()
+	if occupied_cells == width * height:
+		all_cells_occupied = true
+
+	print(" occupied: ", occupied_cells)
+
 
 func remove_item(id: String) -> void:
 	items.erase(id)
@@ -81,17 +128,20 @@ func can_place_item(grid_pos: Vector2, item_resource: ItemResource) -> bool:
 
 func draw(drawer: CanvasItem, color: Color, type: String) -> void:
 	# Draw grid background
-	var background_color = Color(color.r, color.g, color.b, 0.1)
+	var background_color = Color(color.r, color.g, color.b, 0.05)
+
 	var grid_rect = Rect2(offset, Vector2(width * cell_size, height * cell_size))
 	drawer.draw_rect(grid_rect, background_color, true)
 
+	var c = color
+	c.a = 0.3
 	# Draw grid lines
 	for x in range(width + 1):
 		var x_pos = offset.x + x * cell_size
-		drawer.draw_line(Vector2(x_pos, offset.y), Vector2(x_pos, offset.y + height * cell_size), color)
+		drawer.draw_line(Vector2(x_pos, offset.y), Vector2(x_pos, offset.y + height * cell_size), c)
 	for y in range(height + 1):
 		var y_pos = offset.y + y * cell_size
-		drawer.draw_line(Vector2(offset.x, y_pos), Vector2(offset.x + width * cell_size, y_pos), color)
+		drawer.draw_line(Vector2(offset.x, y_pos), Vector2(offset.x + width * cell_size, y_pos), c)
 
 	# Draw items
 	for id in items.keys():

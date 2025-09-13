@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btoqintxll4hq"
-path="res://.godot/imported/4x2_pearls.png-8e98cdda1a51b3b495e0837664439f6e.ctex"
+uid="uid://buga4f1hxdk4"
+path="res://.godot/imported/1x1_fireJar.png-ac7f485732cdf5722b1da3b75056c66d.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/4x2_pearls.png"
-dest_files=["res://.godot/imported/4x2_pearls.png-8e98cdda1a51b3b495e0837664439f6e.ctex"]
+source_file="res://assets/noBGAssets/1x1_fireJar.png"
+dest_files=["res://.godot/imported/1x1_fireJar.png-ac7f485732cdf5722b1da3b75056c66d.ctex"]
 
 [params]
 

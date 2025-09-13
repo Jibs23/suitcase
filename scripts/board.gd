@@ -2,7 +2,12 @@ extends Node2D
 
 var inventory_grid: Grid
 var dropin_grid: Grid
+
 var GRID_CELL_SIZE := 44
+
+
+
+
 
 # Drag variables
 var dragging_item: Dictionary = {}
@@ -20,11 +25,13 @@ func _ready() -> void:
 	z_index = 10
 
 	# Create items with 2x2 scaling for each logical cell (simpler shape definitions)
-	inventory_grid.add_item("Coins", Vector2(4, 4), _create_item("Coins", _make_2x2_square(), "res://assets/PaintedAssets/1x1_coins.png"))
-	inventory_grid.add_item("FireJar", Vector2(6, 4), _create_item("FireJar", _make_2x2_square(), "res://assets/PaintedAssets/1x1_fireJar.png"))
-	inventory_grid.add_item("Dagger", Vector2(1, 2), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/PaintedAssets/3x2_dagger.png"))
-	inventory_grid.add_item("Pouches", Vector2(2, 6), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/PaintedAssets/3x2_pouches.png"))
-	inventory_grid.add_item("Mushrooms", Vector2(4, 6), _create_item("Mushrooms", _make_2x2_L(), "res://assets/PaintedAssets/2x2_L_mushrooms.png"))
+	inventory_grid.add_item("Coins", Vector2(4, 4), _create_item("Coins", _make_2x2_square(), "res://assets/noBGAssets/1x1_coins.png"))
+	inventory_grid.add_item("FireJar", Vector2(6, 4), _create_item("FireJar", _make_2x2_square(), "res://assets/noBGAssets/1x1_fireJar.png"))
+	inventory_grid.add_item("Dagger", Vector2(1, 2), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/noBGAssets/3x2_dagger.png"))
+	inventory_grid.add_item("Pouches", Vector2(2, 6), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/noBGAssets/3x2_pouches.png"))
+	inventory_grid.add_item("Mushrooms", Vector2(4, 6), _create_item("Mushrooms", _make_2x2_L(), "res://assets/noBGAssets/2x2_L_mushrooms.png"))
+	inventory_grid.add_item("Pearls", Vector2(1, 6), _create_item("Pearls", _make_4x2_pearls(), "res://assets/noBGAssets/4x2_pearls.png"))
+	inventory_grid.add_item("Axe", Vector2(1, 3), _create_item("Axe", _make_4x2_axe(), "res://assets/noBGAssets/4x2_axe.png"))
 
 func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
 	var grid = Grid.new()
@@ -33,6 +40,7 @@ func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
 	grid.cell_size = GRID_CELL_SIZE
 	grid.offset = offset
 	return grid
+
 
 func _create_item(item_name: String, shape_array: Array, texture_path: String = "") -> ItemResource:
 	var item = ItemResource.new()
@@ -62,6 +70,30 @@ func _make_3x2_rect_bottom() -> Array:
 		Vector2(2,0), Vector2(3,0), Vector2(2,1), Vector2(3,1)
 	]
 
+func _make_4x2_axe() -> Array:
+	return [
+		Vector2(0,0), Vector2(1,0),Vector2(2,0), Vector2(3,0),
+		Vector2(0,1), Vector2(1,1),Vector2(2,1), Vector2(3,1),
+		Vector2(0,2), Vector2(1,2),Vector2(2,2), Vector2(3,2),
+		Vector2(0,3), Vector2(1,3),Vector2(2,3), Vector2(3,3),
+		Vector2(0,4), Vector2(1,4),
+		Vector2(0,5), Vector2(1,5),
+		Vector2(0,6), Vector2(1,6),
+		Vector2(0,7), Vector2(1,7)]
+
+func _make_4x2_pearls() -> Array:
+	return [
+		Vector2(0,0), Vector2(1,0),Vector2(2,0), Vector2(3,0),
+		Vector2(0,1), Vector2(1,1),Vector2(2,1), Vector2(3,1),
+		Vector2(2,2), Vector2(3,2),
+		Vector2(2,3), Vector2(3,3),
+		Vector2(0,4), Vector2(1,4), Vector2(2,4), Vector2(3,4),
+		Vector2(0,5), Vector2(1,5), Vector2(2,5), Vector2(3,5),
+		Vector2(2,6), Vector2(3,6),
+		Vector2(2,7), Vector2(3,7)
+
+	]
+
 func _make_2x2_L() -> Array:
 	# L-shaped 2x2 with extension (mushrooms shape)
 	return [
@@ -78,6 +110,7 @@ func _input(event: InputEvent) -> void:
 			_end_drag(event.position)
 	elif event is InputEventKey and event.keycode == KEY_U and event.pressed:
 		_rotate_dragging_item()
+
 	elif event is InputEventMouseMotion:
 		mouse_pos = event.position
 		if is_dragging:
@@ -107,6 +140,8 @@ func _start_drag(pos: Vector2) -> void:
 			return
 
 func _end_drag(pos: Vector2) -> void:
+
+	print("End drag at: ", dropin_grid)
 	if not is_dragging:
 		return
 	var target_pos = pos - drag_offset

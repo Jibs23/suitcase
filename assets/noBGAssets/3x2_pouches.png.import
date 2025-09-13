@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cf7x1njbpumlb"
-path="res://.godot/imported/1x2_spilledEyeJar.png-fc630eef539543aca673623586c5a040.ctex"
+uid="uid://dprbawemjgl4y"
+path="res://.godot/imported/3x2_pouches.png-673e882aebc20a658872d1562b097dc8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/1x2_spilledEyeJar.png"
-dest_files=["res://.godot/imported/1x2_spilledEyeJar.png-fc630eef539543aca673623586c5a040.ctex"]
+source_file="res://assets/noBGAssets/3x2_pouches.png"
+dest_files=["res://.godot/imported/3x2_pouches.png-673e882aebc20a658872d1562b097dc8.ctex"]
 
 [params]
 

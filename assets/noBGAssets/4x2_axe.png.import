@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://hkia1xvqlc7o"
-path="res://.godot/imported/2x2_L_mushrooms.png-ea6e83ebc3b3ebd6cf9aac69818b59cb.ctex"
+uid="uid://cuift8i22fr2f"
+path="res://.godot/imported/4x2_axe.png-388cd9d0e82354892a5357a2cb795c16.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/2x2_L_mushrooms.png"
-dest_files=["res://.godot/imported/2x2_L_mushrooms.png-ea6e83ebc3b3ebd6cf9aac69818b59cb.ctex"]
+source_file="res://assets/noBGAssets/4x2_axe.png"
+dest_files=["res://.godot/imported/4x2_axe.png-388cd9d0e82354892a5357a2cb795c16.ctex"]
 
 [params]
 

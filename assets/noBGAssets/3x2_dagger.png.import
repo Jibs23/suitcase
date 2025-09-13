@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buxjj2vh73aat"
-path="res://.godot/imported/3x1_sage.png-175456c829bb7331a265d3cc9b84e036.ctex"
+uid="uid://c3cdc6nab728v"
+path="res://.godot/imported/3x2_dagger.png-10851c916d8aaa0708b3ef1e7408c763.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/3x1_sage.png"
-dest_files=["res://.godot/imported/3x1_sage.png-175456c829bb7331a265d3cc9b84e036.ctex"]
+source_file="res://assets/noBGAssets/3x2_dagger.png"
+dest_files=["res://.godot/imported/3x2_dagger.png-10851c916d8aaa0708b3ef1e7408c763.ctex"]
 
 [params]
 

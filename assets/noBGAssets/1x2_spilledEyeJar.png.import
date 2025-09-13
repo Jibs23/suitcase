@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dtxkw4k40qdkc"
-path="res://.godot/imported/3x2_dagger.png-fe236fbda92791c77e442c3d4d4863dc.ctex"
+uid="uid://bfw2tlgxxhieu"
+path="res://.godot/imported/1x2_spilledEyeJar.png-bf0e894bef1a645187610e945210ed9e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/3x2_dagger.png"
-dest_files=["res://.godot/imported/3x2_dagger.png-fe236fbda92791c77e442c3d4d4863dc.ctex"]
+source_file="res://assets/noBGAssets/1x2_spilledEyeJar.png"
+dest_files=["res://.godot/imported/1x2_spilledEyeJar.png-bf0e894bef1a645187610e945210ed9e.ctex"]
 
 [params]
 

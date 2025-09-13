@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://uhl7xnagl42a"
-path="res://.godot/imported/1x1_coins.png-961565d301b077a1db5c03e0dc5d8b2e.ctex"
+uid="uid://5vyfemtuf1j8"
+path="res://.godot/imported/2x1_snakeJar.png-bd30f3a092f0ea82057f7f0502fc6f8c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/1x1_coins.png"
-dest_files=["res://.godot/imported/1x1_coins.png-961565d301b077a1db5c03e0dc5d8b2e.ctex"]
+source_file="res://assets/noBGAssets/2x1_snakeJar.png"
+dest_files=["res://.godot/imported/2x1_snakeJar.png-bd30f3a092f0ea82057f7f0502fc6f8c.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://r8gjoj6vdqi8"
-path="res://.godot/imported/3x2_pouches.png-680f8a0ab7ea8aca2e6ac7b89c3cdce9.ctex"
+uid="uid://c5aj31wdi86fi"
+path="res://.godot/imported/1x1_coins.png-003d2a98d6b7b766af3cd558c1d2050f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/3x2_pouches.png"
-dest_files=["res://.godot/imported/3x2_pouches.png-680f8a0ab7ea8aca2e6ac7b89c3cdce9.ctex"]
+source_file="res://assets/noBGAssets/1x1_coins.png"
+dest_files=["res://.godot/imported/1x1_coins.png-003d2a98d6b7b766af3cd558c1d2050f.ctex"]
 
 [params]
 
