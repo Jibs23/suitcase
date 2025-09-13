@@ -6,10 +6,11 @@ func _unhandled_input(event):
 		pass
 		#TODO: implement keyboard control system for selecting items
 
-	if event.is_action_pressed("item_rotate_cw"):
-		Logic.item_manager.selected_item.rotate_item(true)
-	if event.is_action_pressed("item_rotate_ccw"):
-		Logic.item_manager.selected_item.rotate_item(false)
+	if Logic.is_item_selected():
+		if event.is_action_pressed("item_rotate_cw"):
+			Logic.item_manager.selected_item.rotate_item(true)
+		if event.is_action_pressed("item_rotate_ccw"):
+			Logic.item_manager.selected_item.rotate_item(false)
 
 ## Called when an item is clicked with the mouse.
 func _on_item_clicked(item, event):

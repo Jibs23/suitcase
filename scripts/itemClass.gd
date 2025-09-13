@@ -18,19 +18,21 @@ func _ready():
 func rotate_item(clockwise:bool):
 	if clockwise:
 		rotation_degrees += 90
-		Logic.audio_manager.play_sound("rotate_cw")
+		Logic.audio_manager.play_sound("rotate_cw",false)
 		print("rotated item clockwise")
 	else:
 		rotation_degrees -= 90
-		Logic.audio_manager.play_sound("rotate_ccw")
+		Logic.audio_manager.play_sound("rotate_ccw",false)
 		print("rotated item counter-clockwise")
 
 func select_item():
+	Logic.audio_manager.play_sound("item_pickup",true)
 	item_manager.selected_item = self
 	is_placed = false
 	print("selected item: ", self.name)
 
 func unselect_item():
+	Logic.audio_manager.play_sound("item_drop",true)
 	is_placed = true
 	print("unselected item: ", self.name)
 	item_manager.selected_item = null

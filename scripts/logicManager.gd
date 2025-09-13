@@ -7,5 +7,4 @@ var board: Node2D
 
 ## Returns true if an item is currently selected.
 func is_item_selected() -> bool:
-	print("is item selected? ", item_manager.selected_item != null)
 	return item_manager.selected_item != null
