@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://b0i8nqrgag36w"]
+[gd_scene load_steps=4 format=3 uid="uid://bmydrgcdwpeoe"]
 
-[ext_resource type="PackedScene" path="res://scenes/Menu.tscn" id="1_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://cqvp1c2srca8m" path="res://scenes/Menu.tscn" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="1_yqjtg"]
 [ext_resource type="PackedScene" uid="uid://cp6stqlhf68e4" path="res://scenes/audio.tscn" id="2_yqjtg"]
 
