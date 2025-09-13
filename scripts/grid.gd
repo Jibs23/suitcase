@@ -6,69 +6,90 @@ class_name Grid
 @export var height: int
 @export var cell_size: int
 @export var offset: Vector2
-@export var item_scale_factor: int = 2  # Each logical cell takes 2x2 visual cells
 
-var items: Dictionary = {} # Dictionary[Vector2, ItemResource]
+var items: Dictionary = {} # Dictionary[Id, ItemResource]
+var next_item_id: int = 1  # Counter for generating unique IDs
 
-func add_item(pos: Vector2, item_resource: ItemResource) -> void:
-	items[pos] = item_resource
+func add_item(id: String, pos: Vector2, item_resource: ItemResource) -> void:
+	items[id] = {
+		"item_resource": item_resource,
+		"position": pos
+	}
 
+# Debug function - can be removed in production
+func debug_print_items():
+	print("Grid items: ", items.keys())
+	for id in items.keys():
+		print("  ", id, " at ", items[id].position)
 
-func remove_item(pos: Vector2) -> void:
-	items.erase(pos)
+func remove_item(id: String) -> void:
+	items.erase(id)
 
-func get_grid_position(world_pos: Vector2) -> Vector2:
-	var local_pos = world_pos - offset
-	return Vector2(local_pos / cell_size).floor()
+func get_item_by_id(id: String) -> Dictionary:
+	if items.has(id):
+		return {
+			"id": id,
+			"position": items[id].position,
+			"item_resource": items[id].item_resource
+		}
+	return {}
+
+func update_item_position(id: String, new_pos: Vector2) -> bool:
+	if items.has(id):
+		items[id].position = new_pos
+		return true
+	return false
+
+func generate_unique_id() -> String:
+	var id = "item_" + str(next_item_id)
+	next_item_id += 1
+	# Ensure uniqueness (in case items were added with manual IDs)
+	while items.has(id):
+		id = "item_" + str(next_item_id)
+		next_item_id += 1
+	return id
 
 func is_position_in_bounds(grid_pos: Vector2) -> bool:
 	return grid_pos.x >= 0 and grid_pos.x < width and grid_pos.y >= 0 and grid_pos.y < height
 
 func world_to_grid(world_pos: Vector2) -> Vector2:
 	var local_pos = world_pos - offset
-	var visual_grid_pos = Vector2(local_pos / cell_size).floor()
-	# Convert from visual grid position to logical grid position
-	return Vector2(floor(visual_grid_pos.x / item_scale_factor), floor(visual_grid_pos.y / item_scale_factor))
+	# Grid positions are 1:1 with cells, no scaling for logical grid
+	return Vector2(local_pos / cell_size).floor()
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
-	# Convert logical grid position to visual grid position, then to world
-	var visual_grid_pos = grid_pos * item_scale_factor
-	return offset + Vector2(visual_grid_pos * cell_size)
+	# Convert logical grid position directly to world position (no scaling for grid bounds)
+	return offset + Vector2(grid_pos * cell_size)
 
 func get_item_at_position(grid_pos: Vector2) -> Dictionary:
-	for item_pos in items.keys():
-		var item_resource: ItemResource = items[item_pos]
+	for id in items.keys():
+		var item_pos = items[id].position
+		var item_resource: ItemResource = items[id].item_resource
 		var shape = item_resource.get_current_shape()
 		for cell in shape:
-			if item_pos + Vector2(cell) == grid_pos:
-				return {"position": item_pos, "item_resource": item_resource}
+			var occupied_pos = item_pos + Vector2(cell)
+			if occupied_pos == grid_pos:
+				return {"id": id, "position": item_pos, "item_resource": item_resource}
 	return {}
 
 func can_place_item(grid_pos: Vector2, item_resource: ItemResource) -> bool:
 	var shape = item_resource.get_current_shape()
+	# Debug: print("Checking placement at grid_pos: ", grid_pos, " for item with shape: ", shape)
 	for cell in shape:
-		# Each logical cell occupies a 2x2 area, so we need to check all visual cells
 		var logical_cell_pos = grid_pos + Vector2(cell)
-		for x in range(item_scale_factor):
-			for y in range(item_scale_factor):
-				var visual_cell_pos = logical_cell_pos * item_scale_factor + Vector2(x, y)
-				if not is_position_in_bounds_visual(visual_cell_pos):
-					return false
-				# Check if position is occupied by another item
-				if get_item_at_position_visual(visual_cell_pos).has("position"):
-					return false
+		# Check if the logical position is within bounds
+		if not is_position_in_bounds(logical_cell_pos):
+			# Debug: print("Position out of bounds: ", logical_cell_pos)
+			return false
+		# Check if position is occupied by another item (check at logical level)
+		var existing_item = get_item_at_position(logical_cell_pos)
+		if existing_item.has("id"):
+			# Debug: Uncomment to see collision detection
+			# print("Cannot place item - position ", logical_cell_pos, " occupied by item with ID: ", existing_item.id)
+			return false
 	return true
 
-# Check bounds for visual grid cells
-func is_position_in_bounds_visual(visual_pos: Vector2) -> bool:
-	var visual_width = width * item_scale_factor
-	var visual_height = height * item_scale_factor
-	return visual_pos.x >= 0 and visual_pos.x < visual_width and visual_pos.y >= 0 and visual_pos.y < visual_height
 
-func get_item_at_position_visual(visual_pos: Vector2) -> Dictionary:
-	# Convert visual position back to logical position
-	var logical_pos = Vector2(floor(visual_pos.x / item_scale_factor), floor(visual_pos.y / item_scale_factor))
-	return get_item_at_position(logical_pos)
 
 func draw(drawer: CanvasItem, color: Color) -> void:
 
@@ -91,8 +112,9 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 						 color)
 
 
-	for pos in items.keys():
-		var item_resource: ItemResource = items[pos]
+	for id in items.keys():
+		var pos = items[id].position
+		var item_resource: ItemResource = items[id].item_resource
 		var shape = item_resource.get_current_shape()
 
 		# Draw sprite if available
@@ -109,13 +131,14 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 				max_x = max(max_x, cell.x)
 				max_y = max(max_y, cell.y)
 
-			# Calculate sprite area covering the entire shape (accounting for scaling)
-			var shape_width = (max_x - min_x + 1) * cell_size * item_scale_factor
-			var shape_height = (max_y - min_y + 1) * cell_size * item_scale_factor
+			# Calculate sprite area covering the entire shape (no scaling needed)
+			var shape_width = (max_x - min_x + 1) * cell_size
+			var shape_height = (max_y - min_y + 1) * cell_size
 			var sprite_area_size = Vector2(shape_width, shape_height)
 
-			# Position sprite at the top-left of the bounding box (accounting for scaling)
-			var sprite_pos = offset + (pos + Vector2(min_x, min_y)) * cell_size * item_scale_factor
+			# Position sprite at the grid position
+			var base_pos = offset + pos * cell_size  # Base grid position
+			var sprite_pos = base_pos + Vector2(min_x, min_y) * cell_size
 
 			# Scale sprite to fit the entire shape area
 			var texture_size = item_resource.sprite_texture.get_size()
@@ -141,9 +164,10 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 func try_start_drag(world_pos: Vector2) -> Dictionary:
 	var grid_pos = world_to_grid(world_pos)
 	var item_data = get_item_at_position(grid_pos)
-	if item_data.has("position"):
+	if item_data.has("id"):
 		return {
 			"grid": self,
+			"id": item_data.id,
 			"position": item_data.position,
 			"item_resource": item_data.item_resource,
 			"drag_offset": world_pos - grid_to_world(item_data.position)
@@ -151,21 +175,22 @@ func try_start_drag(world_pos: Vector2) -> Dictionary:
 	return {}
 
 # Try to place an item at the given world position
-# Returns true if successfully placed, false otherwise
-func try_place_item(world_pos: Vector2, item_resource: ItemResource) -> bool:
+# Returns the ID of the placed item if successful, empty string otherwise
+func try_place_item(world_pos: Vector2, item_resource: ItemResource, custom_id: String = "") -> String:
 	var grid_pos = world_to_grid(world_pos)
 
 	if can_place_item(grid_pos, item_resource):
-		add_item(grid_pos, item_resource)
-		return true
-	return false
+		var id = custom_id if custom_id != "" else generate_unique_id()
+		add_item(id, grid_pos, item_resource)
+		return id
+	return ""
 
 # Try to rotate an item at the given world position
 # Returns true if an item was rotated, false if no item found
 func try_rotate_item_at_position(world_pos: Vector2) -> bool:
 	var grid_pos = world_to_grid(world_pos)
 	var item_data = get_item_at_position(grid_pos)
-	if item_data.has("position"):
+	if item_data.has("id"):
 		item_data.item_resource.rotate_clockwise()
 		return true
 	return false
