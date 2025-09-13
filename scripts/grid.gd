@@ -16,12 +16,6 @@ func add_item(id: String, pos: Vector2, item_resource: ItemResource) -> void:
 		"position": pos
 	}
 
-# Debug function - can be removed in production
-func debug_print_items():
-	print("Grid items: ", items.keys())
-	for id in items.keys():
-		print("  ", id, " at ", items[id].position)
-
 func remove_item(id: String) -> void:
 	items.erase(id)
 
@@ -74,25 +68,18 @@ func get_item_at_position(grid_pos: Vector2) -> Dictionary:
 
 func can_place_item(grid_pos: Vector2, item_resource: ItemResource) -> bool:
 	var shape = item_resource.get_current_shape()
-	# Debug: print("Checking placement at grid_pos: ", grid_pos, " for item with shape: ", shape)
 	for cell in shape:
 		var logical_cell_pos = grid_pos + Vector2(cell)
-		# Check if the logical position is within bounds
 		if not is_position_in_bounds(logical_cell_pos):
-			# Debug: print("Position out of bounds: ", logical_cell_pos)
 			return false
-		# Check if position is occupied by another item (check at logical level)
 		var existing_item = get_item_at_position(logical_cell_pos)
 		if existing_item.has("id"):
-			# Debug: Uncomment to see collision detection
-			# print("Cannot place item - position ", logical_cell_pos, " occupied by item with ID: ", existing_item.id)
 			return false
 	return true
 
 
 
-func draw(drawer: CanvasItem, color: Color) -> void:
-
+func draw(drawer: CanvasItem, color: Color, type: String) -> void:
 	# Draw grid background
 	var background_color = Color(color.r, color.g, color.b, 0.1)
 	var grid_rect = Rect2(offset, Vector2(width * cell_size, height * cell_size))
@@ -101,82 +88,68 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 	# Draw grid lines
 	for x in range(width + 1):
 		var x_pos = offset.x + x * cell_size
-
-		drawer.draw_line(Vector2(x_pos, offset.y),
-						 Vector2(x_pos, offset.y + height * cell_size),
-						 color)
+		drawer.draw_line(Vector2(x_pos, offset.y), Vector2(x_pos, offset.y + height * cell_size), color)
 	for y in range(height + 1):
 		var y_pos = offset.y + y * cell_size
-		drawer.draw_line(Vector2(offset.x, y_pos),
-						 Vector2(offset.x + width * cell_size, y_pos),
-						 color)
+		drawer.draw_line(Vector2(offset.x, y_pos), Vector2(offset.x + width * cell_size, y_pos), color)
 
-
+	# Draw items
 	for id in items.keys():
 		var pos = items[id].position
 		var item_resource: ItemResource = items[id].item_resource
 		var shape = item_resource.get_current_shape()
 
+		# Draw lines around shape
+		_draw_item_shape(drawer, pos, shape, type)
+
 		# Draw sprite if available
 		if item_resource.sprite_texture != null:
-			# Calculate the bounding box of the ORIGINAL shape for consistent scaling
-			var original_shape = item_resource.base_shape
-			var original_min_x = 0
-			var original_min_y = 0
-			var original_max_x = 0
-			var original_max_y = 0
+			_draw_item_sprite(drawer, pos, item_resource, shape)
 
-			for cell in original_shape:
-				original_min_x = min(original_min_x, cell.x)
-				original_min_y = min(original_min_y, cell.y)
-				original_max_x = max(original_max_x, cell.x)
-				original_max_y = max(original_max_y, cell.y)
+func _draw_item_shape(drawer: CanvasItem, pos: Vector2, shape: PackedVector2Array, type: String) -> void:
+	if (type != 'dropin'):
+		return
 
-			# Calculate sprite area based on original shape (for consistent scaling)
-			var original_shape_width = (original_max_x - original_min_x + 1) * cell_size
-			var original_shape_height = (original_max_y - original_min_y + 1) * cell_size
-			var original_sprite_area_size = Vector2(original_shape_width, original_shape_height)
+	for cell in shape:
+		var cell_pos = offset + (pos + Vector2(cell)) * cell_size
+		drawer.draw_rect(Rect2(cell_pos, Vector2(cell_size, cell_size)), Color.WHITE, false, 2)
 
-			# Scale sprite to fit the original shape area (maintains consistent size)
-			var texture_size = item_resource.sprite_texture.get_size()
-			var scale_factor = min(original_sprite_area_size.x / texture_size.x, original_sprite_area_size.y / texture_size.y)
-			var scaled_size = texture_size * scale_factor
+func _draw_item_sprite(drawer: CanvasItem, pos: Vector2, item_resource: ItemResource, shape: PackedVector2Array) -> void:
+	var texture = item_resource.sprite_texture
 
-			# Calculate the bounding box of the CURRENT rotated shape for positioning
-			var min_x = 0
-			var min_y = 0
-			var max_x = 0
-			var max_y = 0
+	# Get shape bounds
+	var shape_bounds = _get_shape_bounds(item_resource.base_shape)
+	var current_bounds = _get_shape_bounds(shape)
 
-			for cell in shape:
-				min_x = min(min_x, cell.x)
-				min_y = min(min_y, cell.y)
-				max_x = max(max_x, cell.x)
-				max_y = max(max_y, cell.y)
+	# Calculate sprite size based on original shape
+	var sprite_size = Vector2(shape_bounds.size * cell_size)
+	var texture_size = texture.get_size()
+	var scale = min(sprite_size.x / texture_size.x, sprite_size.y / texture_size.y)
+	var final_size = texture_size * scale
 
-			# Calculate current shape area for centering
-			var current_shape_width = (max_x - min_x + 1) * cell_size
-			var current_shape_height = (max_y - min_y + 1) * cell_size
-			var current_sprite_area_size = Vector2(current_shape_width, current_shape_height)
+	# Position sprite
+	var world_pos = offset + pos * cell_size + Vector2(current_bounds.position * cell_size)
+	var centered_pos = world_pos + (Vector2(current_bounds.size * cell_size) - final_size) * 0.5
+	var sprite_center = centered_pos + final_size * 0.5
 
-			# Position sprite at the current shape position
-			var base_pos = offset + pos * cell_size
-			var sprite_pos = base_pos + Vector2(min_x, min_y) * cell_size
+	# Draw with rotation
+	drawer.draw_set_transform(sprite_center, deg_to_rad(item_resource.rotation_degrees), Vector2.ONE)
+	drawer.draw_texture_rect(texture, Rect2(-final_size * 0.5, final_size), false, Color(1, 1, 1, 1))
+	drawer.draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
 
-			# Center the sprite within the current shape area
-			var centered_pos = sprite_pos + (current_sprite_area_size - scaled_size) * 0.5
+func _get_shape_bounds(shape: PackedVector2Array) -> Rect2:
+	if shape.is_empty():
+		return Rect2(0, 0, 1, 1)
 
-			# Create a transform for rotation - rotate around the center of the sprite
-			var sprite_center = centered_pos + scaled_size * 0.5
-			var transform = Transform2D()
-			transform = transform.rotated(deg_to_rad(item_resource.rotation_degrees))
-			transform.origin = sprite_center
+	var min_pos = shape[0]
+	var max_pos = shape[0]
+	for point in shape:
+		min_pos.x = min(min_pos.x, point.x)
+		min_pos.y = min(min_pos.y, point.y)
+		max_pos.x = max(max_pos.x, point.x)
+		max_pos.y = max(max_pos.y, point.y)
 
-			drawer.draw_set_transform(sprite_center, deg_to_rad(item_resource.rotation_degrees), Vector2.ONE)
-			drawer.draw_texture_rect(item_resource.sprite_texture,
-									Rect2(-scaled_size * 0.5, scaled_size),
-									false, Color(1, 1, 1, 0.65))
-			drawer.draw_set_transform(Vector2.ZERO, 0, Vector2.ONE)
+	return Rect2(min_pos, max_pos - min_pos + Vector2.ONE)
 
 # Try to start dragging an item at the given world position
 # Returns a dictionary with drag info if successful, empty dict if no item found
@@ -211,17 +184,6 @@ func try_rotate_item_at_position(world_pos: Vector2) -> bool:
 	var item_data = get_item_at_position(grid_pos)
 	if item_data.has("id"):
 		item_data.item_resource.rotate_clockwise()
-		return true
-	return false
-
-# Try to rotate an item at the given world position with tweening
-# Returns true if an item was rotated, false if no item found
-func try_rotate_item_at_position_with_tween(world_pos: Vector2, board: Node2D) -> bool:
-	var grid_pos = world_to_grid(world_pos)
-	var item_data = get_item_at_position(grid_pos)
-	if item_data.has("id"):
-		item_data.item_resource.rotate_clockwise()
-		board.tween_item_rotation(item_data.item_resource)
 		return true
 	return false
 
