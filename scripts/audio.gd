@@ -3,6 +3,8 @@ extends Node
 ## Library of sound effects, refference name and resource path.
 var sfx_library: Dictionary = {
 	#"example_sfx": preload("res://Audio/sfx/example.wav") --- IGNORE ---
+	"rotate_cw": preload("res://Audio/sfx/item_rotate_cw.wav"),
+	"rotate_ccw": preload("res://Audio/sfx/item_rotate_ccw.wav"),
 }
 
 var music_library: Dictionary = {

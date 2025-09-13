@@ -13,12 +13,16 @@ signal clicked(item:Item2D,event:InputEvent)
 func _ready():
 	item_manager = Logic.item_manager
 
-## Rotates the item clockwise or counter-clockwise. dir:bool = true is clockwise and false is counter-clockwise.
-func rotate_item(dir:bool):
-	if dir:
+## Rotates the item clockwise or counter-clockwise. clockwise:bool = true is clockwise and false is counter-clockwise.
+func rotate_item(clockwise:bool):
+	if clockwise:
 		rotation_degrees += 90
+		Logic.audio_manager.play_sound(Logic.audio_manager.sfx_library["rotate_cw"])
+		print("rotated item clockwise")
 	else:
 		rotation_degrees -= 90
+		Logic.audio_manager.play_sound(Logic.audio_manager.sfx_library["rotate_ccw"])
+		print("rotated item counter-clockwise")
 
 func select_item():
 	item_manager.selected_item = self
