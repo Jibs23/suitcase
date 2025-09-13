@@ -7,6 +7,7 @@ class_name Item2D
 @export var item_shape: Area2D
 @export var is_placed: bool = true
 @export var item_manager: Node2D
+var shape
 
 signal clicked(item:Item2D,event:InputEvent)
 
@@ -17,11 +18,11 @@ func _ready():
 func rotate_item(clockwise:bool):
 	if clockwise:
 		rotation_degrees += 90
-		Logic.audio_manager.play_sound(Logic.audio_manager.sfx_library["rotate_cw"])
+		Logic.audio_manager.play_sound("rotate_cw")
 		print("rotated item clockwise")
 	else:
 		rotation_degrees -= 90
-		Logic.audio_manager.play_sound(Logic.audio_manager.sfx_library["rotate_ccw"])
+		Logic.audio_manager.play_sound("rotate_ccw")
 		print("rotated item counter-clockwise")
 
 func select_item():

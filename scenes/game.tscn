@@ -1,10 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://cgtlx0m762ciw"]
+[gd_scene load_steps=5 format=3 uid="uid://bb225rj6fnttb"]
 
 [ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="1_ibkli"]
+[ext_resource type="Script" uid="uid://ceyhc5cm3bxwj" path="res://scripts/item_manager.gd" id="1_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://bj8cwxrl7ihaw" path="res://scenes/Board.tscn" id="2_qbsmt"]
+[ext_resource type="Script" uid="uid://cdxs3ss5kc4uw" path="res://scripts/audio.gd" id="3_iywne"]
 
 [node name="Game" type="Node2D"]
 
-[node name="Item2D" parent="." instance=ExtResource("1_ibkli")]
-
 [node name="Board" parent="." instance=ExtResource("2_qbsmt")]
+
+[node name="Node2D" type="Node2D" parent="."]
+script = ExtResource("1_lnu2h")
+
+[node name="Item2D" parent="Node2D" instance=ExtResource("1_ibkli")]
+
+[node name="Audio" type="Node" parent="."]
+script = ExtResource("3_iywne")

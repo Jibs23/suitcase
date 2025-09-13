@@ -13,6 +13,8 @@ var is_dragging: bool = false
 var drag_preview_shape: PackedVector2Array
 var mouse_pos: Vector2
 
+func _init() -> void:
+	Logic.board = self
 
 func _ready() -> void:
 	# Setup grids

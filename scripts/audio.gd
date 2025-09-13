@@ -16,11 +16,12 @@ func _init():
 	
 
 ## play a sound from the sfx_library.
-func play_sound(sound):
-	print("playing sound: ", sound)
+func play_sound(sound:String) -> void:
+	var sfx = sfx_library.get(sound)
+	print("playing sound: ", sfx)
 	var streamPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
 	add_child(streamPlayer)
-	streamPlayer.stream = sound
+	streamPlayer.stream = sfx
 	streamPlayer.play()
 	await streamPlayer.finished
 	streamPlayer.queue_free()
