@@ -6,7 +6,6 @@ class_name Grid
 @export var height: int
 @export var cell_size: int
 @export var offset: Vector2
-@export var item_scale_factor: int = 2  # Each logical cell takes 2x2 visual cells
 
 var items: Dictionary = {} # Dictionary[Id, ItemResource]
 var next_item_id: int = 1  # Counter for generating unique IDs
@@ -50,23 +49,17 @@ func generate_unique_id() -> String:
 		next_item_id += 1
 	return id
 
-func get_grid_position(world_pos: Vector2) -> Vector2:
-	var local_pos = world_pos - offset
-	return Vector2(local_pos / cell_size).floor()
-
 func is_position_in_bounds(grid_pos: Vector2) -> bool:
 	return grid_pos.x >= 0 and grid_pos.x < width and grid_pos.y >= 0 and grid_pos.y < height
 
 func world_to_grid(world_pos: Vector2) -> Vector2:
 	var local_pos = world_pos - offset
-	var visual_grid_pos = Vector2(local_pos / cell_size).floor()
-	# Convert from visual grid position to logical grid position
-	return Vector2(floor(visual_grid_pos.x / item_scale_factor), floor(visual_grid_pos.y / item_scale_factor))
+	# Grid positions are 1:1 with cells, no scaling for logical grid
+	return Vector2(local_pos / cell_size).floor()
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
-	# Convert logical grid position to visual grid position, then to world
-	var visual_grid_pos = grid_pos * item_scale_factor
-	return offset + Vector2(visual_grid_pos * cell_size)
+	# Convert logical grid position directly to world position (no scaling for grid bounds)
+	return offset + Vector2(grid_pos * cell_size)
 
 func get_item_at_position(grid_pos: Vector2) -> Dictionary:
 	for id in items.keys():
@@ -91,7 +84,8 @@ func can_place_item(grid_pos: Vector2, item_resource: ItemResource) -> bool:
 		# Check if position is occupied by another item (check at logical level)
 		var existing_item = get_item_at_position(logical_cell_pos)
 		if existing_item.has("id"):
-			print("Cannot place item - position ", logical_cell_pos, " occupied by item with ID: ", existing_item.id)
+			# Debug: Uncomment to see collision detection
+			# print("Cannot place item - position ", logical_cell_pos, " occupied by item with ID: ", existing_item.id)
 			return false
 	return true
 
@@ -137,13 +131,14 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 				max_x = max(max_x, cell.x)
 				max_y = max(max_y, cell.y)
 
-			# Calculate sprite area covering the entire shape (accounting for scaling)
-			var shape_width = (max_x - min_x + 1) * cell_size * item_scale_factor
-			var shape_height = (max_y - min_y + 1) * cell_size * item_scale_factor
+			# Calculate sprite area covering the entire shape (no scaling needed)
+			var shape_width = (max_x - min_x + 1) * cell_size
+			var shape_height = (max_y - min_y + 1) * cell_size
 			var sprite_area_size = Vector2(shape_width, shape_height)
 
-			# Position sprite at the top-left of the bounding box (accounting for scaling)
-			var sprite_pos = offset + (pos + Vector2(min_x, min_y)) * cell_size * item_scale_factor
+			# Position sprite at the grid position
+			var base_pos = offset + pos * cell_size  # Base grid position
+			var sprite_pos = base_pos + Vector2(min_x, min_y) * cell_size
 
 			# Scale sprite to fit the entire shape area
 			var texture_size = item_resource.sprite_texture.get_size()
