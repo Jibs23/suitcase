@@ -1,5 +1,5 @@
 extends Node2D
-## The item class used by all items. 
+## The item class used by all items.
 class_name Item2D
 
 @export var item_name: String
