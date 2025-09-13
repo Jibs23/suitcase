@@ -61,6 +61,7 @@ func _rotate_item_at_position(pos: Vector2) -> void:
 
 func _start_drag(pos: Vector2) -> void:
 	var grids = [inventory_grid, dropin_grid]
+	Logic.audio_manager.play_sound("item_pickup", true)
 	for grid in grids:
 		var drag_data = grid.try_start_drag(pos)
 		if not drag_data.is_empty():
@@ -79,6 +80,7 @@ func _end_drag(pos: Vector2) -> void:
 	var target_pos = pos - drag_offset
 	var grids = [dropin_grid, inventory_grid]  # Try dropin first
 
+	Logic.audio_manager.play_sound("item_drop", true)
 	for grid in grids:
 		if grid.try_place_item(target_pos, dragging_item.item_resource):
 			_reset_drag()

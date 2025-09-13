@@ -1,36 +1,9 @@
 [gd_scene load_steps=8 format=3 uid="uid://bj8cwxrl7ihaw"]
 
 [ext_resource type="Script" uid="uid://b7d8wfejb3t28" path="res://scripts/board.gd" id="1_qails"]
-[ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="2_66b1s"]
+[ext_resource type="Script" uid="uid://cwnynh7fux13m" path="res://scripts/notes.gd" id="2_w6jgk"]
 [ext_resource type="Texture2D" uid="uid://b11soq0nubdlf" path="res://assets/inventory.png" id="3_w6jgk"]
 [ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="4_w6jgk"]
-
-[sub_resource type="Animation" id="Animation_w6jgk"]
-resource_name = "intro_paper"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [-1.5708, 0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(0.5, 1),
-"update": 0,
-"values": [Vector2(-315.525, 299.9), Vector2(231, 325)]
-}
 
 [sub_resource type="Animation" id="Animation_xdl3i"]
 length = 0.001
@@ -58,6 +31,71 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector2(231, 325)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="Animation" id="Animation_w6jgk"]
+resource_name = "intro_paper"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [-1.5708, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector2(-315.525, 299.9), Vector2(231, 325)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"play_intro_sound"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_wlyqt"]
 _data = {
@@ -67,15 +105,11 @@ _data = {
 
 [node name="Board" type="Node2D"]
 
-[node name="Background" type="Sprite2D" parent="."]
-position = Vector2(575, 328)
-scale = Vector2(0.3, 0.296296)
-texture = ExtResource("2_66b1s")
-
 [node name="Notes" type="Sprite2D" parent="."]
 position = Vector2(231, 325)
 scale = Vector2(0.181223, 0.181223)
 texture = ExtResource("3_w6jgk")
+script = ExtResource("2_w6jgk")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Notes"]
 libraries = {
