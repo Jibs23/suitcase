@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://bmydrgcdwpeoe"]
 
 [ext_resource type="PackedScene" uid="uid://cqvp1c2srca8m" path="res://scenes/Menu.tscn" id="1_lnu2h"]
-[ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="1_yqjtg"]
+[ext_resource type="Texture2D" uid="uid://b2jt1j06wk2lw" path="res://assets/Table.png" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cp6stqlhf68e4" path="res://scenes/audio.tscn" id="2_yqjtg"]
 
 [node name="Game" type="Node2D"]
@@ -11,9 +11,9 @@
 [node name="Menu" parent="MenuContainer" instance=ExtResource("1_lnu2h")]
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(654, 412.5)
-scale = Vector2(0.340625, 0.381944)
-texture = ExtResource("1_yqjtg")
+position = Vector2(638.939, 403)
+scale = Vector2(0.33278, 0.373148)
+texture = ExtResource("2_lnu2h")
 
 [node name="LevelContainer" type="Node" parent="." groups=["LevelContainer"]]
 
