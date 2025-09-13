@@ -119,7 +119,30 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 
 		# Draw sprite if available
 		if item_resource.sprite_texture != null:
-			# Calculate the bounding box of the shape
+			# Calculate the bounding box of the ORIGINAL shape for consistent scaling
+			var original_shape = item_resource.base_shape
+			var original_min_x = 0
+			var original_min_y = 0
+			var original_max_x = 0
+			var original_max_y = 0
+
+			for cell in original_shape:
+				original_min_x = min(original_min_x, cell.x)
+				original_min_y = min(original_min_y, cell.y)
+				original_max_x = max(original_max_x, cell.x)
+				original_max_y = max(original_max_y, cell.y)
+
+			# Calculate sprite area based on original shape (for consistent scaling)
+			var original_shape_width = (original_max_x - original_min_x + 1) * cell_size
+			var original_shape_height = (original_max_y - original_min_y + 1) * cell_size
+			var original_sprite_area_size = Vector2(original_shape_width, original_shape_height)
+
+			# Scale sprite to fit the original shape area (maintains consistent size)
+			var texture_size = item_resource.sprite_texture.get_size()
+			var scale_factor = min(original_sprite_area_size.x / texture_size.x, original_sprite_area_size.y / texture_size.y)
+			var scaled_size = texture_size * scale_factor
+
+			# Calculate the bounding box of the CURRENT rotated shape for positioning
 			var min_x = 0
 			var min_y = 0
 			var max_x = 0
@@ -131,29 +154,25 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 				max_x = max(max_x, cell.x)
 				max_y = max(max_y, cell.y)
 
-			# Calculate sprite area covering the entire shape (no scaling needed)
-			var shape_width = (max_x - min_x + 1) * cell_size
-			var shape_height = (max_y - min_y + 1) * cell_size
-			var sprite_area_size = Vector2(shape_width, shape_height)
+			# Calculate current shape area for centering
+			var current_shape_width = (max_x - min_x + 1) * cell_size
+			var current_shape_height = (max_y - min_y + 1) * cell_size
+			var current_sprite_area_size = Vector2(current_shape_width, current_shape_height)
 
-			# Position sprite at the grid position
-			var base_pos = offset + pos * cell_size  # Base grid position
+			# Position sprite at the current shape position
+			var base_pos = offset + pos * cell_size
 			var sprite_pos = base_pos + Vector2(min_x, min_y) * cell_size
 
-			# Scale sprite to fit the entire shape area
-			var texture_size = item_resource.sprite_texture.get_size()
-			var scale_factor = min(sprite_area_size.x / texture_size.x, sprite_area_size.y / texture_size.y)
-			var scaled_size = texture_size * scale_factor
+			# Center the sprite within the current shape area
+			var centered_pos = sprite_pos + (current_sprite_area_size - scaled_size) * 0.5
 
-			# Center the sprite within the shape area
-			var centered_pos = sprite_pos + (sprite_area_size - scaled_size) * 0.5
-
-			# Create a transform for rotation
+			# Create a transform for rotation - rotate around the center of the sprite
+			var sprite_center = centered_pos + scaled_size * 0.5
 			var transform = Transform2D()
 			transform = transform.rotated(deg_to_rad(item_resource.rotation_degrees))
-			transform.origin = centered_pos + scaled_size * 0.5
+			transform.origin = sprite_center
 
-			drawer.draw_set_transform(transform.origin, transform.get_rotation(), Vector2.ONE)
+			drawer.draw_set_transform(sprite_center, deg_to_rad(item_resource.rotation_degrees), Vector2.ONE)
 			drawer.draw_texture_rect(item_resource.sprite_texture,
 									Rect2(-scaled_size * 0.5, scaled_size),
 									false, Color(1, 1, 1, 0.65))
@@ -192,6 +211,17 @@ func try_rotate_item_at_position(world_pos: Vector2) -> bool:
 	var item_data = get_item_at_position(grid_pos)
 	if item_data.has("id"):
 		item_data.item_resource.rotate_clockwise()
+		return true
+	return false
+
+# Try to rotate an item at the given world position with tweening
+# Returns true if an item was rotated, false if no item found
+func try_rotate_item_at_position_with_tween(world_pos: Vector2, board: Node2D) -> bool:
+	var grid_pos = world_to_grid(world_pos)
+	var item_data = get_item_at_position(grid_pos)
+	if item_data.has("id"):
+		item_data.item_resource.rotate_clockwise()
+		board.tween_item_rotation(item_data.item_resource)
 		return true
 	return false
 

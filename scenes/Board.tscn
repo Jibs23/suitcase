@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b7d8wfejb3t28" path="res://scripts/board.gd" id="1_qails"]
 [ext_resource type="Script" uid="uid://cwnynh7fux13m" path="res://scripts/notes.gd" id="2_w6jgk"]
 [ext_resource type="Texture2D" uid="uid://b11soq0nubdlf" path="res://assets/inventory.png" id="3_w6jgk"]
-[ext_resource type="Script" uid="uid://c8k7te6xoet1v" path="res://scripts/speedrun_timer.gd" id="4_w6jgk"]
+[ext_resource type="Script" path="res://scripts/speedrun_timer.gd" id="4_w6jgk"]
 [ext_resource type="Theme" uid="uid://sha0qc2gq37y" path="res://default.tres" id="4_xdl3i"]
 
 [sub_resource type="Animation" id="Animation_xdl3i"]
