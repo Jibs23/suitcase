@@ -1,31 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bb225rj6fnttb"]
+[gd_scene load_steps=2 format=3 uid="uid://bmydrgcdwpeoe"]
 
-[ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://scenes/Item_test.tscn" id="1_ibkli"]
 [ext_resource type="PackedScene" uid="uid://bj8cwxrl7ihaw" path="res://scenes/Board.tscn" id="2_qbsmt"]
-[ext_resource type="Script" uid="uid://cdxs3ss5kc4uw" path="res://scripts/audio.gd" id="3_iywne"]
-[ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="4_78awf"]
-[ext_resource type="Texture2D" uid="uid://cdksdkk4jisx0" path="res://assets/inventory.png" id="5_s0nni"]
 
 [node name="Game" type="Node2D"]
 
-[node name="Board" parent="." instance=ExtResource("2_qbsmt")]
+[node name="Level" type="Node" parent="."]
 
-[node name="ItemManager" type="Node2D" parent="."]
-script = ExtResource("1_lnu2h")
-
-[node name="Item2D" parent="ItemManager" instance=ExtResource("1_ibkli")]
-
-[node name="Audio" type="Node" parent="."]
-script = ExtResource("3_iywne")
-
-[node name="Item2D" parent="." instance=ExtResource("1_ibkli")]
-
-[node name="Background" type="Sprite2D" parent="."]
-position = Vector2(588, 333.5)
-scale = Vector2(0.306771, 0.306019)
-texture = ExtResource("4_78awf")
-
-[node name="Notes" type="Sprite2D" parent="."]
-position = Vector2(249, 335)
-scale = Vector2(0.183543, 0.183543)
-texture = ExtResource("5_s0nni")
+[node name="Board" parent="Level" instance=ExtResource("2_qbsmt")]

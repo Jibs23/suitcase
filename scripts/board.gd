@@ -17,7 +17,7 @@ func _init() -> void:
 func _ready() -> void:
 	inventory_grid = _create_grid(8, 12, Vector2(120, 150))
 	dropin_grid = _create_grid(10, 10, Vector2(700, 120))
-	z_index = 1
+	z_index = 10
 
 	inventory_grid.add_item(Vector2(1, 1), _create_item("L-Shape", [Vector2(0,0), Vector2(1,0), Vector2(0,1)], "res://assets/inventory.png"))
 	inventory_grid.add_item(Vector2(2, 2), _create_item("T-Shape", [Vector2(1,0), Vector2(0,1), Vector2(1,1), Vector2(2,1)], "res://assets/icon.svg"))
@@ -143,32 +143,32 @@ func _draw_item_shape(pos: Vector2, shape: PackedVector2Array, color: Color) -> 
 func _draw_item_sprite(pos: Vector2, can_place: bool) -> void:
 	var texture = drag_preview_item.sprite_texture
 	var shape = drag_preview_item.get_current_shape()
-	
+
 	# Calculate the bounding box of the shape
 	var min_x = 0
 	var min_y = 0
 	var max_x = 0
 	var max_y = 0
-	
+
 	for cell in shape:
 		min_x = min(min_x, cell.x)
 		min_y = min(min_y, cell.y)
 		max_x = max(max_x, cell.x)
 		max_y = max(max_y, cell.y)
-	
+
 	# Calculate sprite area covering the entire shape
 	var shape_width = (max_x - min_x + 1) * GRID_CELL_SIZE
 	var shape_height = (max_y - min_y + 1) * GRID_CELL_SIZE
 	var sprite_area_size = Vector2(shape_width, shape_height)
-	
+
 	# Position sprite at the top-left of the bounding box
 	var sprite_pos = pos + Vector2(min_x, min_y) * GRID_CELL_SIZE
-	
+
 	# Scale sprite to fit the entire shape area
 	var texture_size = texture.get_size()
 	var scale_factor = min(sprite_area_size.x / texture_size.x, sprite_area_size.y / texture_size.y)
 	var scaled_size = texture_size * scale_factor
-	
+
 	# Center the sprite within the shape area
 	var centered_pos = sprite_pos + (sprite_area_size - scaled_size) * 0.5
 

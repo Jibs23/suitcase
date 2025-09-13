@@ -86,34 +86,34 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 			var min_y = 0
 			var max_x = 0
 			var max_y = 0
-			
+
 			for cell in shape:
 				min_x = min(min_x, cell.x)
 				min_y = min(min_y, cell.y)
 				max_x = max(max_x, cell.x)
 				max_y = max(max_y, cell.y)
-			
+
 			# Calculate sprite area covering the entire shape
 			var shape_width = (max_x - min_x + 1) * cell_size
 			var shape_height = (max_y - min_y + 1) * cell_size
 			var sprite_area_size = Vector2(shape_width, shape_height)
-			
+
 			# Position sprite at the top-left of the bounding box
 			var sprite_pos = offset + (pos + Vector2(min_x, min_y)) * cell_size
-			
+
 			# Scale sprite to fit the entire shape area
 			var texture_size = item_resource.sprite_texture.get_size()
 			var scale_factor = min(sprite_area_size.x / texture_size.x, sprite_area_size.y / texture_size.y)
 			var scaled_size = texture_size * scale_factor
-			
+
 			# Center the sprite within the shape area
 			var centered_pos = sprite_pos + (sprite_area_size - scaled_size) * 0.5
-			
+
 			# Create a transform for rotation
 			var transform = Transform2D()
 			transform = transform.rotated(deg_to_rad(item_resource.rotation_degrees))
 			transform.origin = centered_pos + scaled_size * 0.5
-			
+
 			drawer.draw_set_transform(transform.origin, transform.get_rotation(), Vector2.ONE)
 			drawer.draw_texture_rect(item_resource.sprite_texture,
 									Rect2(-scaled_size * 0.5, scaled_size),
