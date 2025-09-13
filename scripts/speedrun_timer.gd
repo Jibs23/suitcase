@@ -3,6 +3,10 @@ extends Label
 var timer: float = 0.0
 var time_is_running: bool = false
 
+
+func _init() -> void:
+	Logic.speedrun_timer = self
+
 func _ready():
 	visible = false
 

@@ -11,17 +11,10 @@ var drag_preview_item: ItemResource
 var drag_offset: Vector2
 var mouse_pos: Vector2
 
-var speedrun_timer: Label 
-
-signal start_timer
-signal stop_timer
-signal reset_timer
-
 func _init() -> void:
 	Logic.board = self
 
 func _ready() -> void:
-	speedrun_timer = $Timer
 	inventory_grid = _create_grid(8, 12, Vector2(100, 150))
 	dropin_grid = _create_grid(10, 10, Vector2(700, 120))
 	z_index = 10
@@ -76,7 +69,7 @@ func _process(_delta: float) -> void:
 func _start_drag(pos: Vector2) -> void:
 	var grids = [inventory_grid, dropin_grid]
 	#TODO: fix so sound only plays when you actually pick up an item.
-	#TODO: Make speedrun timer start and stop when picking up item. Use Signals probably.
+	#TODO: Make speedrun timer start and stop when picking up item.
 	Logic.audio_manager.play_sound("item_pickup", true)
 	for grid in grids:
 		var drag_data = grid.try_start_drag(pos)
