@@ -2,7 +2,6 @@ extends Node
 
 ## Library of sound effects, refference name and resource path.
 var sfx_library: Dictionary = {
-	#"example_sfx": preload("res://Audio/sfx/example.wav") --- IGNORE ---
 	"rotate_cw": preload("res://Audio/sfx/item_rotate_cw.wav"),
 	"rotate_ccw": preload("res://Audio/sfx/item_rotate_ccw.wav"),
 	"item_pickup": preload("res://Audio/sfx/item_pickup.wav"),
@@ -11,14 +10,21 @@ var sfx_library: Dictionary = {
 	"paper": preload("res://Audio/sfx/paper.wav")
 }
 
+var music_player: AudioStreamPlayer
+
 ## Library of music tracks, refference name and resource path.
 var music_library: Dictionary = {
-	#"example_music": preload("res://Audio/music/example.wav") --- IGNORE ---
+	1: preload("res://Audio/Music/song_1.wav"),
+	2: preload("res://Audio/Music/song_2.wav"),
+	3: preload("res://Audio/Music/song_3.wav")
 }
 
 func _init():
 	Logic.audio_manager = self
-	
+
+func _ready():
+	music_player = $Music
+	play_music_random()
 
 ## play a sound from the sfx_library. Set random_pitch to true to add a random pitch variation.
 func play_sound(sound:String,random_pitch:bool) -> void:
@@ -31,3 +37,18 @@ func play_sound(sound:String,random_pitch:bool) -> void:
 	streamPlayer.play()
 	await streamPlayer.finished
 	streamPlayer.queue_free()
+
+func play_music_random():
+	var random_song = randi_range(1, music_library.size()+1)
+	play_music(random_song)
+
+func play_music(track:int) -> void:
+	var music = music_library[track]
+	if music_player.stream == music:
+		push_error("Music track already playing")
+		return
+	music_player.stop()
+	music_player.stream = music
+	music_player.play()
+	await music_player.finished
+	play_music_random()

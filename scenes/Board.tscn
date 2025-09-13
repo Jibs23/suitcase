@@ -1,6 +1,4 @@
-
-[gd_scene load_steps=8 format=3 uid="uid://bj8cwxrl7ihaw"]
-
+[gd_scene load_steps=7 format=3 uid="uid://bj8cwxrl7ihaw"]
 
 [ext_resource type="Script" uid="uid://b7d8wfejb3t28" path="res://scripts/board.gd" id="1_qails"]
 [ext_resource type="Script" uid="uid://cwnynh7fux13m" path="res://scripts/notes.gd" id="2_w6jgk"]

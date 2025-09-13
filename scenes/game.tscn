@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cqvp1c2srca8m" path="res://scenes/Menu.tscn" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://ewslx5gwv715" path="res://assets/backdrop.png" id="1_yqjtg"]
-[ext_resource type="PackedScene" uid="uid://6xprdt31hwn" path="res://scenes/audio.tscn" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://cp6stqlhf68e4" path="res://scenes/audio.tscn" id="2_yqjtg"]
 
 [node name="Game" type="Node2D"]
 
