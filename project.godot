@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Suitcase"
-run/main_scene="uid://b1cityttcd61c"
+run/main_scene="uid://bb225rj6fnttb"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://assets/icon.svg"
 
@@ -19,7 +19,6 @@ config/icon="res://assets/icon.svg"
 
 InputM="*res://scripts/input_manager.gd"
 Logic="*res://scripts/logicManager.gd"
-GlobalGameState="*res://autoload/GlobalGameState.gd"
 InputManager="*res://scripts/input_manager.gd"
 
 [global_group]
