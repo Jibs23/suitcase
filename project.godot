@@ -11,8 +11,9 @@ config_version=5
 [application]
 
 config/name="Suitcase"
-run/main_scene="uid://bb225rj6fnttb"
+run/main_scene="uid://bmydrgcdwpeoe"
 config/features=PackedStringArray("4.4", "Forward Plus")
+run/max_fps=60
 config/icon="res://assets/icon.svg"
 
 [autoload]
@@ -21,6 +22,8 @@ Logic="*res://scripts/logicManager.gd"
 
 [display]
 
+window/size/viewport_width=1280
+window/size/viewport_height=720
 window/stretch/mode="viewport"
 
 [global_group]
