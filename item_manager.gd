@@ -8,7 +8,6 @@ func on_clicked(item):
 
 func _ready():
 	assign_item_signals()
-	pass
 
 func _init():
 	Logic.item_manager = self

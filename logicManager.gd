@@ -2,6 +2,7 @@ extends Node
 # Manages game logic and references to other managers.
 
 var item_manager: Node2D
+var audio_manager: Node
 
 ## Returns true if an item is currently selected.
 func is_item_selected() -> bool:

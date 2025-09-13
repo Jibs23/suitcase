@@ -20,21 +20,21 @@ func rotate_item(dir:bool):
 	else:
 		rotation_degrees -= 90
 
-func set_selected_item():
+func select_item():
 	item_manager.selected_item = self
 	is_placed = false
 	print("selected item: ", self.name)
 
-func unset_selected_item():
+func unselect_item():
 	is_placed = true
 	print("unselected item: ", self.name)
 	item_manager.selected_item = null
 
 func toggle_selected_item():
 	if self == item_manager.selected_item:
-		unset_selected_item()
+		unselect_item()
 	else:
-		set_selected_item()
+		select_item()
 
 func _on_area_2d_input_event(_viewport:Node, event:InputEvent, _shape_idx:int) -> void:
 	if event is not InputEventMouseButton or event.button_index != MOUSE_BUTTON_LEFT: return

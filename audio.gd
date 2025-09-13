@@ -1,0 +1,24 @@
+extends Node
+
+## Library of sound effects, refference name and resource path.
+var sfx_library: Dictionary = {
+	#"example_sfx": preload("res://Audio/sfx/example.wav") --- IGNORE ---
+}
+
+var music_library: Dictionary = {
+	#"example_music": preload("res://Audio/music/example.wav") --- IGNORE ---
+}
+
+func _init():
+	Logic.audio_manager = self
+	
+
+## play a sound from the sfx_library.
+func play_sound(sound):
+	print("playing sound: ", sound)
+	var streamPlayer: AudioStreamPlayer = AudioStreamPlayer.new()
+	add_child(streamPlayer)
+	streamPlayer.stream = sound
+	streamPlayer.play()
+	await streamPlayer.finished
+	streamPlayer.queue_free()
