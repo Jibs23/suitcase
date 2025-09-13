@@ -76,15 +76,13 @@ func _rotate_dragging_item(item: Dictionary) -> void:
 	queue_redraw()
 
 
-
 func _start_drag(pos: Vector2) -> void:
 	var grids = [inventory_grid, dropin_grid]
-	#TODO: fix so sound only plays when you actually pick up an item.
-	#TODO: Make speedrun timer start and stop when picking up item.
-	Logic.audio_manager.play_sound("item_pickup", true)
 	for grid in grids:
 		var drag_data = grid.try_start_drag(pos)
 		if not drag_data.is_empty():
+			Logic.audio_manager.play_sound("item_pickup", true)
+			Logic.speedrun_timer.start_timer()
 			dragging_item = drag_data
 			drag_preview_item = drag_data.item_resource
 			drag_offset = drag_data.drag_offset
@@ -96,11 +94,10 @@ func _start_drag(pos: Vector2) -> void:
 func _end_drag(pos: Vector2) -> void:
 	if not is_dragging:
 		return
-
 	var target_pos = pos - drag_offset
 	var grids = [dropin_grid, inventory_grid]  # Try dropin first
 
-	Logic.audio_manager.play_sound("item_drop", true)
+	
 	for grid in grids:
 		var placed_id = grid.try_place_item(target_pos, dragging_item.item_resource, dragging_item.id)
 		if placed_id != "":
@@ -112,6 +109,7 @@ func _end_drag(pos: Vector2) -> void:
 	_reset_drag()
 
 func _reset_drag() -> void:
+	Logic.audio_manager.play_sound("item_drop", true)
 	is_dragging = false
 	dragging_item.clear()
 	queue_redraw()
