@@ -1,28 +1,29 @@
 extends Node2D
 
-# Inventory grid
-@export var inv_cell_size: int = 32
-@export var inv_width: int = 5
-@export var inv_height: int = 5
-@export var inv_offset: Vector2 = Vector2(0, 0)
+var inventory_grid: Grid
+var dropin_grid: Grid
 
-# Drop-in grid
-@export var drop_cell_size: int = 32
-@export var drop_width: int = 8
-@export var drop_height: int = 8
-@export var drop_offset: Vector2 = Vector2(200, 0)
+var GRID_CELL_SIZE := 32
+
+func _ready() -> void:
+	# Setup grids
+	inventory_grid = Grid.new()
+	inventory_grid.width = 3
+	inventory_grid.height = 10
+	inventory_grid.cell_size = GRID_CELL_SIZE
+	inventory_grid.offset = Vector2(0, 0)
+
+	dropin_grid = Grid.new()
+	dropin_grid.width = 10
+	dropin_grid.height = 10
+	dropin_grid.cell_size = GRID_CELL_SIZE
+	dropin_grid.offset = Vector2(200, 0)
+
+	# Example items
+	var shape = PackedVector2Array([Vector2(0,0), Vector2(1,0), Vector2(0,1)]) # L-shape
+	dropin_grid.add_item(Vector2(1, 1), shape)
+	inventory_grid.add_item(Vector2(2, 2), shape)
 
 func _draw() -> void:
-    _draw_grid(inv_offset, inv_width, inv_height, inv_cell_size, Color.WHITE)
-    _draw_grid(drop_offset, drop_width, drop_height, drop_cell_size, Color.GRAY)
-
-func _draw_grid(offset: Vector2, width: int, height: int, cell_size: int, color: Color) -> void:
-    # Vertical lines
-    for x in range(width + 1):
-        var x_pos = offset.x + x * cell_size
-        draw_line(Vector2(x_pos, offset.y), Vector2(x_pos, offset.y + height * cell_size), color)
-
-    # Horizontal lines
-    for y in range(height + 1):
-        var y_pos = offset.y + y * cell_size
-        draw_line(Vector2(offset.x, y_pos), Vector2(offset.x + width * cell_size, y_pos), color)
+	inventory_grid.draw(self, Color.GREEN)
+	dropin_grid.draw(self, Color.ORANGE)

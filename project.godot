@@ -19,7 +19,6 @@ config/icon="res://assets/icon.svg"
 
 InputM="*res://scripts/input_manager.gd"
 Logic="*res://scripts/logicManager.gd"
-GlobalGameState="*res://autoload/GlobalGameState.gd"
 InputManager="*res://scripts/input_manager.gd"
 
 [global_group]
