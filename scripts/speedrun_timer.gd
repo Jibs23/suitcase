@@ -25,4 +25,7 @@ func reset_timer() -> void:
 func _process(delta: float) -> void:
 	if time_is_running:
 		timer += 1*delta
-		text = str(timer).pad_decimals(2)
+		var minutes = int(timer) / 60
+		var seconds = int(timer) % 60
+		var milliseconds = int((timer - int(timer)) * 100)
+		text = "%02d:%02d:%02d" % [minutes, seconds, milliseconds]
