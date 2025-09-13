@@ -6,11 +6,13 @@ class_name Grid
 @export var height: int
 @export var cell_size: int
 @export var offset: Vector2
+@export var item_scale_factor: int = 2  # Each logical cell takes 2x2 visual cells
 
 var items: Dictionary = {} # Dictionary[Vector2, ItemResource]
 
 func add_item(pos: Vector2, item_resource: ItemResource) -> void:
 	items[pos] = item_resource
+
 
 func remove_item(pos: Vector2) -> void:
 	items.erase(pos)
@@ -23,10 +25,15 @@ func is_position_in_bounds(grid_pos: Vector2) -> bool:
 	return grid_pos.x >= 0 and grid_pos.x < width and grid_pos.y >= 0 and grid_pos.y < height
 
 func world_to_grid(world_pos: Vector2) -> Vector2:
-	return get_grid_position(world_pos)
+	var local_pos = world_pos - offset
+	var visual_grid_pos = Vector2(local_pos / cell_size).floor()
+	# Convert from visual grid position to logical grid position
+	return Vector2(floor(visual_grid_pos.x / item_scale_factor), floor(visual_grid_pos.y / item_scale_factor))
 
 func grid_to_world(grid_pos: Vector2) -> Vector2:
-	return offset + Vector2(grid_pos * cell_size)
+	# Convert logical grid position to visual grid position, then to world
+	var visual_grid_pos = grid_pos * item_scale_factor
+	return offset + Vector2(visual_grid_pos * cell_size)
 
 func get_item_at_position(grid_pos: Vector2) -> Dictionary:
 	for item_pos in items.keys():
@@ -40,13 +47,28 @@ func get_item_at_position(grid_pos: Vector2) -> Dictionary:
 func can_place_item(grid_pos: Vector2, item_resource: ItemResource) -> bool:
 	var shape = item_resource.get_current_shape()
 	for cell in shape:
-		var check_pos = grid_pos + Vector2(cell)
-		if not is_position_in_bounds(check_pos):
-			return false
-		# Check if position is occupied by another item
-		if get_item_at_position(check_pos).has("position"):
-			return false
+		# Each logical cell occupies a 2x2 area, so we need to check all visual cells
+		var logical_cell_pos = grid_pos + Vector2(cell)
+		for x in range(item_scale_factor):
+			for y in range(item_scale_factor):
+				var visual_cell_pos = logical_cell_pos * item_scale_factor + Vector2(x, y)
+				if not is_position_in_bounds_visual(visual_cell_pos):
+					return false
+				# Check if position is occupied by another item
+				if get_item_at_position_visual(visual_cell_pos).has("position"):
+					return false
 	return true
+
+# Check bounds for visual grid cells
+func is_position_in_bounds_visual(visual_pos: Vector2) -> bool:
+	var visual_width = width * item_scale_factor
+	var visual_height = height * item_scale_factor
+	return visual_pos.x >= 0 and visual_pos.x < visual_width and visual_pos.y >= 0 and visual_pos.y < visual_height
+
+func get_item_at_position_visual(visual_pos: Vector2) -> Dictionary:
+	# Convert visual position back to logical position
+	var logical_pos = Vector2(floor(visual_pos.x / item_scale_factor), floor(visual_pos.y / item_scale_factor))
+	return get_item_at_position(logical_pos)
 
 func draw(drawer: CanvasItem, color: Color) -> void:
 
@@ -73,12 +95,6 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 		var item_resource: ItemResource = items[pos]
 		var shape = item_resource.get_current_shape()
 
-		# Draw shape background
-		for cell in shape:
-			var cell_pos = pos + cell
-			var top_left = offset + cell_pos * cell_size
-			drawer.draw_rect(Rect2(top_left, Vector2(cell_size, cell_size)), color, true)
-
 		# Draw sprite if available
 		if item_resource.sprite_texture != null:
 			# Calculate the bounding box of the shape
@@ -93,13 +109,13 @@ func draw(drawer: CanvasItem, color: Color) -> void:
 				max_x = max(max_x, cell.x)
 				max_y = max(max_y, cell.y)
 
-			# Calculate sprite area covering the entire shape
-			var shape_width = (max_x - min_x + 1) * cell_size
-			var shape_height = (max_y - min_y + 1) * cell_size
+			# Calculate sprite area covering the entire shape (accounting for scaling)
+			var shape_width = (max_x - min_x + 1) * cell_size * item_scale_factor
+			var shape_height = (max_y - min_y + 1) * cell_size * item_scale_factor
 			var sprite_area_size = Vector2(shape_width, shape_height)
 
-			# Position sprite at the top-left of the bounding box
-			var sprite_pos = offset + (pos + Vector2(min_x, min_y)) * cell_size
+			# Position sprite at the top-left of the bounding box (accounting for scaling)
+			var sprite_pos = offset + (pos + Vector2(min_x, min_y)) * cell_size * item_scale_factor
 
 			# Scale sprite to fit the entire shape area
 			var texture_size = item_resource.sprite_texture.get_size()
@@ -138,6 +154,7 @@ func try_start_drag(world_pos: Vector2) -> Dictionary:
 # Returns true if successfully placed, false otherwise
 func try_place_item(world_pos: Vector2, item_resource: ItemResource) -> bool:
 	var grid_pos = world_to_grid(world_pos)
+
 	if can_place_item(grid_pos, item_resource):
 		add_item(grid_pos, item_resource)
 		return true
