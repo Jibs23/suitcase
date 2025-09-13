@@ -5,10 +5,11 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_bp1wp"]
 
-[node name="Item" type="Node2D" node_paths=PackedStringArray("item_shape", "item_sprite")]
+[node name="Item2D" type="Node2D" node_paths=PackedStringArray("item_sprite", "item_shape")]
 script = ExtResource("1_bp1wp")
-item_shape = NodePath("Area2D")
+item_name = "Generic Item"
 item_sprite = NodePath("Sprite2D")
+item_shape = NodePath("Area2D")
 metadata/_custom_type_script = "uid://djo2ipsy24cny"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

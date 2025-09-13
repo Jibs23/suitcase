@@ -1,13 +1,14 @@
 [gd_scene load_steps=3 format=3 uid="uid://b1cityttcd61c"]
 
 [ext_resource type="Script" uid="uid://ceyhc5cm3bxwj" path="res://item_manager.gd" id="1_80nbo"]
-[ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://Item.tscn" id="2_e2o6t"]
+[ext_resource type="PackedScene" uid="uid://cmoxg1yw5gpu3" path="res://Item_test.tscn" id="2_e2o6t"]
 
 [node name="Game" type="Node"]
 
 [node name="Level" type="Node2D" parent="."]
 
-[node name="ItemManager" type="Node2D" parent="Level" groups=["ItemManager"]]
+[node name="ItemManager" type="Node2D" parent="Level"]
 script = ExtResource("1_80nbo")
 
-[node name="Item" parent="Level/ItemManager" instance=ExtResource("2_e2o6t")]
+[node name="Item2D" parent="Level/ItemManager" instance=ExtResource("2_e2o6t")]
+position = Vector2(295, 160)
