@@ -34,47 +34,34 @@ func _rotate_shape(shape: PackedVector2Array, degrees: float) -> PackedVector2Ar
 	if degrees == 0.0:
 		return shape
 
-	# Debug: print("Rotating shape ", shape, " by ", degrees, " degrees")
-
 	var rotated_shape = PackedVector2Array()
-
-	# For 90-degree increments, use simple transformation rules
 	var steps = int(degrees / 90.0) % 4
 	if steps < 0:
 		steps += 4
 
 	for point in shape:
 		var new_point = point
-
-		# Apply 90-degree rotations
+		# Apply 90-degree rotations: (x, y) -> (-y, x)
 		for i in range(steps):
-			# 90-degree clockwise rotation: (x, y) -> (-y, x)
 			var temp_x = new_point.x
 			new_point.x = -new_point.y
 			new_point.y = temp_x
-
 		rotated_shape.append(new_point)
 
-	# Normalize shape to ensure all coordinates are non-negative
-	var result = _normalize_shape(rotated_shape)
-
-	return result
+	return _normalize_shape(rotated_shape)
 
 func _normalize_shape(shape: PackedVector2Array) -> PackedVector2Array:
 	if shape.is_empty():
 		return shape
 
-	# Find minimum x and y values
-	var min_x = shape[0].x
-	var min_y = shape[0].y
-
+	# Find minimum coordinates
+	var min_pos = shape[0]
 	for point in shape:
-		min_x = min(min_x, point.x)
-		min_y = min(min_y, point.y)
+		min_pos.x = min(min_pos.x, point.x)
+		min_pos.y = min(min_pos.y, point.y)
 
-	# Offset all points to make minimum values 0
+	# Offset all points to start at (0,0)
 	var normalized_shape = PackedVector2Array()
 	for point in shape:
-		normalized_shape.append(Vector2(point.x - min_x, point.y - min_y))
-
+		normalized_shape.append(point - min_pos)
 	return normalized_shape

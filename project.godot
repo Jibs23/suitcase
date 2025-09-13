@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Suitcase"
-run/main_scene="uid://bj8cwxrl7ihaw"
+run/main_scene="uid://b0i8nqrgag36w"
 config/features=PackedStringArray("4.4", "Forward Plus")
 run/max_fps=60
 config/icon="res://assets/icon.svg"
