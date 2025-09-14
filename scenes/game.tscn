@@ -1,19 +1,47 @@
-[gd_scene load_steps=4 format=3 uid="uid://bmydrgcdwpeoe"]
+[gd_scene load_steps=6 format=3 uid="uid://bmydrgcdwpeoe"]
 
 [ext_resource type="PackedScene" uid="uid://cqvp1c2srca8m" path="res://scenes/Menu.tscn" id="1_lnu2h"]
-[ext_resource type="Texture2D" uid="uid://b2jt1j06wk2lw" path="res://assets/Table.png" id="2_lnu2h"]
+[ext_resource type="Texture2D" uid="uid://dtnct0lrj0c6h" path="res://assets/startscreen1.png" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cp6stqlhf68e4" path="res://scenes/audio.tscn" id="2_yqjtg"]
+[ext_resource type="Script" uid="uid://byo1ofl0uuvtr" path="res://scripts/background.gd" id="3_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://tj8w2mlgyuv" path="res://scenes/glitter.tscn" id="4_iywne"]
 
 [node name="Game" type="Node2D"]
 
 [node name="MenuContainer" type="CanvasLayer" parent="."]
 
 [node name="Menu" parent="MenuContainer" instance=ExtResource("1_lnu2h")]
+offset_left = 543.0
+offset_top = 449.0
+offset_right = 543.0
+offset_bottom = 449.0
 
 [node name="Background" type="Sprite2D" parent="."]
-position = Vector2(638.939, 403)
-scale = Vector2(0.33278, 0.373148)
+position = Vector2(640.001, 400)
+scale = Vector2(0.333333, 0.37037)
 texture = ExtResource("2_lnu2h")
+script = ExtResource("3_lbhrr")
+
+[node name="Glitter" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(-1434, 43.1998)
+
+[node name="Glitter2" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(-1167, -361.8)
+
+[node name="Glitter3" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(911.999, 334.8)
+
+[node name="Glitter4" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(1131, 542.7)
+
+[node name="Glitter5" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(605.999, -774.9)
+
+[node name="Glitter6" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(-1392, -820.8)
+
+[node name="Glitter7" parent="Background" instance=ExtResource("4_iywne")]
+position = Vector2(-1539, 731.7)
 
 [node name="LevelContainer" type="Node" parent="." groups=["LevelContainer"]]
 
