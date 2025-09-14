@@ -19,6 +19,9 @@ var mouse_pos: Vector2
 func _init() -> void:
 	Logic.board = self
 
+func check_for_win() -> bool:
+	return dropin_grid.all_cells_occupied
+
 func _ready() -> void:
 	inventory_grid = _create_grid(8, 12, Vector2(100, 120))  # Double the grid size for 2x effect
 	dropin_grid = _create_grid(10, 10, Vector2(700, 140))      # Double the grid size for 2x effect
@@ -141,7 +144,6 @@ func _start_drag(pos: Vector2) -> void:
 
 func _end_drag(pos: Vector2) -> void:
 
-	print("End drag at: ", dropin_grid)
 	if not is_dragging:
 		return
 	var target_pos = pos - drag_offset
@@ -152,6 +154,8 @@ func _end_drag(pos: Vector2) -> void:
 		var placed_id = grid.try_place_item(target_pos, dragging_item.item_resource, dragging_item.id)
 		if placed_id != "":
 			_reset_drag()
+			if check_for_win():
+				print("You win!")  # Placeholder for win condition handling
 			return
 
 	# If couldn't place anywhere, return to original position

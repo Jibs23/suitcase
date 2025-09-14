@@ -13,17 +13,6 @@ var items: Dictionary = {} # Dictionary[Id, ItemResource]
 var next_item_id: int = 1  # Counter for generating unique IDs
 var all_cells_occupied: bool = false
 
-func is_full() -> bool:
-	for item in items:
-		var shape = item.item_resource.get_current_shape()
-
-		for cell in shape:
-			var occupied_pos = item.position + Vector2(cell)
-			if occupied_pos.x < 0 or occupied_pos.x >= width or occupied_pos.y < 0 or occupied_pos.y >= height:
-				return false
-			if items.has(occupied_pos):
-				return false
-	return true
 
 func count_occupied_cells() -> int:
 	var occupied_cells = {}
@@ -59,8 +48,6 @@ func add_item(id: String, pos: Vector2, item_resource: ItemResource) -> void:
 	var occupied_cells = count_occupied_cells()
 	if occupied_cells == width * height:
 		all_cells_occupied = true
-
-	print(" occupied: ", occupied_cells)
 
 
 func remove_item(id: String) -> void:
