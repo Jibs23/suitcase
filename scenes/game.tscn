@@ -3,8 +3,8 @@
 [ext_resource type="PackedScene" uid="uid://cqvp1c2srca8m" path="res://scenes/Menu.tscn" id="1_lnu2h"]
 [ext_resource type="Texture2D" uid="uid://dtnct0lrj0c6h" path="res://assets/startscreen1.png" id="2_lnu2h"]
 [ext_resource type="PackedScene" uid="uid://cp6stqlhf68e4" path="res://scenes/audio.tscn" id="2_yqjtg"]
-[ext_resource type="Script" uid="uid://byo1ofl0uuvtr" path="res://scripts/background.gd" id="3_lbhrr"]
-[ext_resource type="PackedScene" uid="uid://tj8w2mlgyuv" path="res://scenes/glitter.tscn" id="4_iywne"]
+[ext_resource type="Script" path="res://scripts/background.gd" id="3_lbhrr"]
+[ext_resource type="PackedScene" path="res://scenes/glitter.tscn" id="4_iywne"]
 
 [node name="Game" type="Node2D"]
 

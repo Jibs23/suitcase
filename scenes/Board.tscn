@@ -109,7 +109,7 @@ _data = {
 
 [node name="Notes" type="Sprite2D" parent="."]
 position = Vector2(277, 358)
-scale = Vector2(0.246275, 0.240551)
+scale = Vector2(0.3, 0.294)
 texture = ExtResource("3_w6jgk")
 script = ExtResource("2_w6jgk")
 
