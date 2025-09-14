@@ -1,12 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://dtlsbens3gjfi"]
+[gd_scene load_steps=5 format=3 uid="uid://dtlsbens3gjfi"]
 
 [ext_resource type="Texture2D" uid="uid://cuw7al8eautls" path="res://assets/win_and_next_round.png" id="1_ujlt3"]
 [ext_resource type="Script" uid="uid://3pn1vkjucgob" path="res://scripts/victory_screen.gd" id="1_wdgif"]
+[ext_resource type="PackedScene" uid="uid://tj8w2mlgyuv" path="res://scenes/glitter.tscn" id="2_pfcnd"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pfcnd"]
 
 [node name="VictoryScreen" type="Node2D"]
 script = ExtResource("1_wdgif")
+
+[node name="Glitter" parent="." instance=ExtResource("2_pfcnd")]
+position = Vector2(580, 258)
+
+[node name="Glitter2" parent="." instance=ExtResource("2_pfcnd")]
+position = Vector2(781, 552)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(644, 404)
@@ -20,5 +27,3 @@ material = SubResource("CanvasItemMaterial_pfcnd")
 position = Vector2(9.615, 18.4692)
 scale = Vector2(1.1, 1.07167)
 texture = ExtResource("1_ujlt3")
-
-[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]
