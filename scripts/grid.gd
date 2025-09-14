@@ -147,9 +147,61 @@ func _draw_item_shape(drawer: CanvasItem, pos: Vector2, shape: PackedVector2Arra
 	if (type != 'dropin'):
 		return
 
+	# Draw only the outline of the shape, not individual cell borders
+	_draw_shape_outline(drawer, pos, shape)
+
+func _draw_shape_outline(drawer: CanvasItem, pos: Vector2, shape: PackedVector2Array) -> void:
+	# Convert shape cells to a set for quick lookup
+	var occupied_cells = {}
+	for cell in shape:
+		var cell_key = str(cell.x) + "," + str(cell.y)
+		occupied_cells[cell_key] = true
+
+	# For each cell, check which edges should be drawn (edges that face empty space)
 	for cell in shape:
 		var cell_pos = offset + (pos + Vector2(cell)) * cell_size
-		drawer.draw_rect(Rect2(cell_pos, Vector2(cell_size, cell_size)), Color.WHITE, false, 2)
+		var cell_rect = Rect2(cell_pos, Vector2(cell_size, cell_size))
+
+		# Check each edge of the cell
+		var neighbors = [
+			Vector2(cell.x - 1, cell.y),  # Left
+			Vector2(cell.x + 1, cell.y),  # Right
+			Vector2(cell.x, cell.y - 1),  # Top
+			Vector2(cell.x, cell.y + 1)   # Bottom
+		]
+
+		# Draw edges that face empty space
+		for i in range(4):
+			var neighbor = neighbors[i]
+			var neighbor_key = str(neighbor.x) + "," + str(neighbor.y)
+
+			if not occupied_cells.has(neighbor_key):
+				# This edge faces empty space, draw it
+				match i:
+					0: # Left edge
+						drawer.draw_line(
+							Vector2(cell_rect.position.x, cell_rect.position.y),
+							Vector2(cell_rect.position.x, cell_rect.position.y + cell_rect.size.y),
+							Color.WHITE, 2
+						)
+					1: # Right edge
+						drawer.draw_line(
+							Vector2(cell_rect.position.x + cell_rect.size.x, cell_rect.position.y),
+							Vector2(cell_rect.position.x + cell_rect.size.x, cell_rect.position.y + cell_rect.size.y),
+							Color.WHITE, 2
+						)
+					2: # Top edge
+						drawer.draw_line(
+							Vector2(cell_rect.position.x, cell_rect.position.y),
+							Vector2(cell_rect.position.x + cell_rect.size.x, cell_rect.position.y),
+							Color.WHITE, 2
+						)
+					3: # Bottom edge
+						drawer.draw_line(
+							Vector2(cell_rect.position.x, cell_rect.position.y + cell_rect.size.y),
+							Vector2(cell_rect.position.x + cell_rect.size.x, cell_rect.position.y + cell_rect.size.y),
+							Color.WHITE, 2
+						)
 
 func _draw_item_sprite(drawer: CanvasItem, pos: Vector2, item_resource: ItemResource, shape: PackedVector2Array) -> void:
 	var texture = item_resource.sprite_texture
