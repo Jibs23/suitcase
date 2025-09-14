@@ -128,7 +128,6 @@ scale = Vector2(0.273571, 0.273571)
 texture = ExtResource("6_wlyqt")
 
 [node name="VictoryScreen" parent="." instance=ExtResource("5_kqf1l")]
-visible = false
 
 [node name="Timer" type="Label" parent="."]
 anchors_preset = 1

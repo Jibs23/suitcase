@@ -14,6 +14,11 @@ var next_item_id: int = 1  # Counter for generating unique IDs
 var all_cells_occupied: bool = false
 
 
+func clear() -> void:
+	items.clear()
+	next_item_id = 1
+	all_cells_occupied = false
+
 func count_occupied_cells() -> int:
 	var occupied_cells = {}
 	var total_occupied = 0
@@ -24,9 +29,6 @@ func count_occupied_cells() -> int:
 		var item_pos = item.position
 		var item_resource: ItemResource = item.item_resource
 		var shape = item_resource.get_current_shape()
-	# 	var item_pos = item.position
-	# 	var item_resource: ItemResource = item.item_resource
-	# 	var shape = item_resource.get_current_shape()
 
 		for cell in shape:
 			var occupied_pos = item_pos + Vector2(cell)

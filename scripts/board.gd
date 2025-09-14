@@ -7,8 +7,6 @@ var GRID_CELL_SIZE := 44
 
 
 
-
-
 # Drag variables
 var dragging_item: Dictionary = {}
 var is_dragging: bool = false
@@ -21,6 +19,27 @@ func _init() -> void:
 
 func check_for_win() -> bool:
 	return dropin_grid.all_cells_occupied
+
+func populate_inventory() -> void:
+	inventory_grid.add_item("Coins", Vector2(0, 0), _create_item("Coins", _make_2x2_square(), "res://assets/noBGAssets/1x1_coins.png"))
+	inventory_grid.add_item("FireJar", Vector2(2, 0), _create_item("FireJar", _make_2x2_square(), "res://assets/noBGAssets/1x1_fireJar.png"))
+	inventory_grid.add_item("Pouches", Vector2(4, 0), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/noBGAssets/3x2_pouches.png", 90))
+	inventory_grid.add_item("Pearls", Vector2(6, 0), _create_item("Pearls", _make_4x2_pearls(), "res://assets/noBGAssets/4x2_pearls_coins.png"))
+	inventory_grid.add_item("Axe", Vector2(0, 2), _create_item("Axe", _make_4x2_axe(), "res://assets/noBGAssets/4x2_axe.png", 0))
+	inventory_grid.add_item("Mushrooms", Vector2(2, 8), _create_item("Mushrooms", _make_2x2_L(), "res://assets/noBGAssets/2x2_L_mushrooms.png"))
+	inventory_grid.add_item("Dagger", Vector2(4, 6), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/noBGAssets/3x2_dagger.png", 90))
+
+func reset_game() -> void:
+	Logic.audio_manager.stop_music()
+	dropin_grid.clear()
+	inventory_grid.clear()
+	dragging_item.clear()
+	populate_inventory()
+	is_dragging = false
+	Logic.isWin = false
+	Logic.victory_screen.deactivate_victory_screen()
+	Logic.audio_manager.play_music_random()
+	queue_redraw()
 
 func _ready() -> void:
 	inventory_grid = _create_grid(10, 14, Vector2(55, 100))  # Double the grid size for 2x effect
@@ -109,7 +128,7 @@ func _make_2x2_L() -> Array:
 func _input(event: InputEvent) -> void:
 	if Logic.isWin:
 		return
-		
+
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			_start_drag(event.position)

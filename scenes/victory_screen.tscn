@@ -1,12 +1,15 @@
-[gd_scene load_steps=5 format=3 uid="uid://dtlsbens3gjfi"]
+[gd_scene load_steps=7 format=3 uid="uid://dtlsbens3gjfi"]
 
 [ext_resource type="Texture2D" uid="uid://cuw7al8eautls" path="res://assets/win_and_next_round.png" id="1_ujlt3"]
 [ext_resource type="Script" uid="uid://3pn1vkjucgob" path="res://scripts/victory_screen.gd" id="1_wdgif"]
-[ext_resource type="PackedScene" uid="uid://tj8w2mlgyuv" path="res://scenes/glitter.tscn" id="2_pfcnd"]
+[ext_resource type="PackedScene" path="res://scenes/glitter.tscn" id="2_pfcnd"]
+[ext_resource type="Texture2D" uid="uid://dcc40rns3gt1n" path="res://assets/start3.svg" id="4_rixwf"]
+[ext_resource type="Script" uid="uid://c8oefwmyqln1p" path="res://scenes/reset_button.gd" id="5_ll51u"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pfcnd"]
 
 [node name="VictoryScreen" type="Node2D"]
+visible = false
 script = ExtResource("1_wdgif")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -27,3 +30,15 @@ position = Vector2(580, 258)
 
 [node name="Glitter2" parent="." instance=ExtResource("2_pfcnd")]
 position = Vector2(781, 552)
+
+[node name="Button" type="Button" parent="."]
+offset_left = 640.0
+offset_top = 374.0
+offset_right = 818.0
+offset_bottom = 552.0
+scale = Vector2(0.45, 0.45)
+icon = ExtResource("4_rixwf")
+flat = true
+script = ExtResource("5_ll51u")
+
+[connection signal="pressed" from="Button" to="Button" method="_on_pressed"]

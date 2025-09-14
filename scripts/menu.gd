@@ -4,6 +4,7 @@ func _init():
 	Logic.menu = self
 
 func _on_start_pressed() -> void:
+	Logic.audio_manager.play_sound("select", false)
 	LevelManager.load_level(0)
 
 func _on_quit_pressed() -> void:
