@@ -107,6 +107,9 @@ func _make_2x2_L() -> Array:
 	]
 
 func _input(event: InputEvent) -> void:
+	if Logic.isWin:
+		return
+		
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
 		if event.pressed:
 			_start_drag(event.position)
