@@ -37,6 +37,16 @@ func rotate_counter_clockwise() -> void:
 	if rotation_degrees < 0.0:
 		rotation_degrees += 360.0
 
+func set_rotation(degrees: float) -> void:
+	rotation_degrees = degrees
+	if rotation_degrees >= 360.0:
+		rotation_degrees = fmod(rotation_degrees, 360.0)
+	elif rotation_degrees < 0.0:
+		rotation_degrees = fmod(rotation_degrees, 360.0) + 360.0
+	# Clear cache when rotation changes
+	_cached_rotation = -999.0
+	_cached_shape = PackedVector2Array()
+
 func _rotate_shape(shape: PackedVector2Array, degrees: float) -> PackedVector2Array:
 	if degrees == 0.0:
 		return shape

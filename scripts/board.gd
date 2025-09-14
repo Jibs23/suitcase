@@ -13,6 +13,7 @@ var is_dragging: bool = false
 var drag_preview_item: ItemResource
 var drag_offset: Vector2
 var mouse_pos: Vector2
+var last_valid_rotation: float = 0.0  # Store the last valid rotation
 
 func _init() -> void:
 	Logic.board = self
@@ -166,6 +167,7 @@ func _rotate_dragging_item() -> void:
 	if not is_dragging:
 		return
 
+	# Always rotate visually, regardless of placement validity
 	dragging_item.item_resource.rotate_clockwise()
 	Logic.audio_manager.play_sound("rotate_cw", true)
 	queue_redraw()
@@ -181,6 +183,8 @@ func _start_drag(pos: Vector2) -> void:
 			dragging_item = drag_data
 			drag_preview_item = drag_data.item_resource
 			drag_offset = drag_data.drag_offset
+			# Store the initial rotation as the last valid rotation
+			last_valid_rotation = drag_data.item_resource.rotation_degrees
 			grid.remove_item(drag_data.id)
 			is_dragging = true
 			queue_redraw()
@@ -204,8 +208,9 @@ func _end_drag(pos: Vector2) -> void:
 			return
 
 	# If couldn't place anywhere, return to original position
+	# Revert to the last valid rotation (from when dragging started)
+	dragging_item.item_resource.set_rotation(last_valid_rotation)
 	dragging_item.grid.add_item(dragging_item.id, dragging_item.position, dragging_item.item_resource)
-	dragging_item.item_resource.reset_rotation()  # Reset rotation if returning to original position
 	_reset_drag()
 
 func _reset_drag() -> void:
