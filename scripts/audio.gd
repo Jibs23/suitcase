@@ -49,11 +49,9 @@ func play_music_random():
 
 func play_music(track:int) -> void:
 	var music = music_library[track]
-	if music_player.stream == music:
-		push_error("Music track already playing")
-		return
 	music_player.stop()
 	music_player.stream = music
 	music_player.play()
+	
 	await music_player.finished
 	play_music_random()

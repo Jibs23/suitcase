@@ -29,7 +29,7 @@ func populate_inventory() -> void:
 	inventory_grid.add_item("Mushrooms", Vector2(2, 8), _create_item("Mushrooms", _make_2x2_L(), "res://assets/noBGAssets/2x2_L_mushrooms.png"))
 	inventory_grid.add_item("Dagger", Vector2(4, 6), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/noBGAssets/3x2_dagger.png", 90))
 	inventory_grid.add_item("Sage", Vector2(8, 8), _create_item("Sage", _make_3x1_sage(), "res://assets/noBGAssets/3x1_sage.png", 0))
-	inventory_grid.add_item("Snake", Vector2(0, 10), _create_item("Snake", _make_2x1_snake(), "res://assets/noBGAssets/2x1_snakeJar.png", 0))
+	# inventory_grid.add_item("Snake", Vector2(0, 10), _create_item("Snake", _make_2x1_snake(), "res://assets/noBGAssets/2x1_snakeJar.png", 0))
 
 func reset_game() -> void:
 	Logic.audio_manager.play_music_random()
@@ -61,6 +61,7 @@ func _create_item(item_name: String, shape_array: Array, texture_path: String = 
 	var item = ItemResource.new()
 	item.item_name = item_name
 	item.base_shape = PackedVector2Array(shape_array)
+	item.initial_rotation_degrees = deg
 	item.rotation_degrees = deg
 	if texture_path != "" and ResourceLoader.exists(texture_path):
 		item.sprite_texture = load(texture_path)
@@ -153,7 +154,7 @@ func _input(event: InputEvent) -> void:
 			_start_drag(event.position)
 		else:
 			_end_drag(event.position)
-	elif event is InputEventKey and event.keycode == KEY_R and event.pressed:
+	if event.is_action_pressed("item_rotate_cw"):
 		_rotate_dragging_item()
 
 	elif event is InputEventMouseMotion:
@@ -164,6 +165,7 @@ func _input(event: InputEvent) -> void:
 func _rotate_dragging_item() -> void:
 	if not is_dragging:
 		return
+
 	dragging_item.item_resource.rotate_clockwise()
 	Logic.audio_manager.play_sound("rotate_cw", true)
 	queue_redraw()
@@ -203,6 +205,7 @@ func _end_drag(pos: Vector2) -> void:
 
 	# If couldn't place anywhere, return to original position
 	dragging_item.grid.add_item(dragging_item.id, dragging_item.position, dragging_item.item_resource)
+	dragging_item.item_resource.reset_rotation()  # Reset rotation if returning to original position
 	_reset_drag()
 
 func _reset_drag() -> void:

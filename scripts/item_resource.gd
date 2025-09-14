@@ -5,10 +5,17 @@ class_name ItemResource
 @export var sprite_texture: Texture2D
 @export var base_shape: PackedVector2Array = PackedVector2Array()
 @export var rotation_degrees: float = 0.0
+@export var initial_rotation_degrees: float = 0.0
 
 # Cached rotated shape to avoid recalculating every time
 var _cached_shape: PackedVector2Array
 var _cached_rotation: float = -999.0
+
+
+func reset_rotation() -> void:
+	rotation_degrees = initial_rotation_degrees
+	_cached_shape = PackedVector2Array()
+	_cached_rotation = -999.0
 
 func get_current_shape() -> PackedVector2Array:
 	# Return cached shape if rotation hasn't changed

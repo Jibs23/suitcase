@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bj8cwxrl7ihaw"]
+[gd_scene load_steps=12 format=3 uid="uid://bj8cwxrl7ihaw"]
 
 [ext_resource type="Script" uid="uid://b7d8wfejb3t28" path="res://scripts/board.gd" id="1_qails"]
 [ext_resource type="Script" uid="uid://cwnynh7fux13m" path="res://scripts/notes.gd" id="2_w6jgk"]
@@ -7,6 +7,7 @@
 [ext_resource type="Theme" uid="uid://sha0qc2gq37y" path="res://default.tres" id="4_xdl3i"]
 [ext_resource type="PackedScene" uid="uid://dtlsbens3gjfi" path="res://scenes/victory_screen.tscn" id="5_kqf1l"]
 [ext_resource type="Texture2D" uid="uid://dcq1b0ijxmgjs" path="res://assets/suticase2.png" id="6_wlyqt"]
+[ext_resource type="Texture2D" uid="uid://dk046l47wo3sd" path="res://assets/rotate.png" id="8_hljw5"]
 
 [sub_resource type="Animation" id="Animation_xdl3i"]
 length = 0.001
@@ -148,3 +149,9 @@ theme_override_constants/shadow_outline_size = 6
 theme_override_font_sizes/font_size = 40
 text = "00:00.00"
 script = ExtResource("4_w6jgk")
+
+[node name="Rotate" type="Sprite2D" parent="."]
+position = Vector2(831, 728)
+rotation = 0.0453786
+scale = Vector2(0.253614, 0.253614)
+texture = ExtResource("8_hljw5")
