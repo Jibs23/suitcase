@@ -28,9 +28,11 @@ func populate_inventory() -> void:
 	inventory_grid.add_item("Axe", Vector2(0, 2), _create_item("Axe", _make_4x2_axe(), "res://assets/noBGAssets/4x2_axe.png", 0))
 	inventory_grid.add_item("Mushrooms", Vector2(2, 8), _create_item("Mushrooms", _make_2x2_L(), "res://assets/noBGAssets/2x2_L_mushrooms.png"))
 	inventory_grid.add_item("Dagger", Vector2(4, 6), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/noBGAssets/3x2_dagger.png", 90))
+	inventory_grid.add_item("Sage", Vector2(8, 8), _create_item("Sage", _make_3x1_sage(), "res://assets/noBGAssets/3x1_sage.png", 0))
+	inventory_grid.add_item("Snake", Vector2(0, 10), _create_item("Snake", _make_2x1_snake(), "res://assets/noBGAssets/2x1_snakeJar.png", 0))
 
 func reset_game() -> void:
-	Logic.audio_manager.stop_music()
+	Logic.audio_manager.play_music_random()
 	dropin_grid.clear()
 	inventory_grid.clear()
 	dragging_item.clear()
@@ -38,22 +40,13 @@ func reset_game() -> void:
 	is_dragging = false
 	Logic.isWin = false
 	Logic.victory_screen.deactivate_victory_screen()
-	Logic.audio_manager.play_music_random()
 	queue_redraw()
 
 func _ready() -> void:
 	inventory_grid = _create_grid(10, 14, Vector2(55, 100))  # Double the grid size for 2x effect
 	dropin_grid = _create_grid(10, 10, Vector2(700, 140))      # Double the grid size for 2x effect
 	z_index = 10
-
-	# Create items with 2x2 scaling for each logical cell (simpler shape definitions)
-	inventory_grid.add_item("Coins", Vector2(0, 0), _create_item("Coins", _make_2x2_square(), "res://assets/noBGAssets/1x1_coins.png"))
-	inventory_grid.add_item("FireJar", Vector2(2, 0), _create_item("FireJar", _make_2x2_square(), "res://assets/noBGAssets/1x1_fireJar.png"))
-	inventory_grid.add_item("Pouches", Vector2(4, 0), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/noBGAssets/3x2_pouches.png", 90))
-	inventory_grid.add_item("Pearls", Vector2(6, 0), _create_item("Pearls", _make_4x2_pearls(), "res://assets/noBGAssets/4x2_pearls_coins.png"))
-	inventory_grid.add_item("Axe", Vector2(0, 2), _create_item("Axe", _make_4x2_axe(), "res://assets/noBGAssets/4x2_axe.png", 0))
-	inventory_grid.add_item("Mushrooms", Vector2(2, 8), _create_item("Mushrooms", _make_2x2_L(), "res://assets/noBGAssets/2x2_L_mushrooms.png"))
-	inventory_grid.add_item("Dagger", Vector2(4, 6), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/noBGAssets/3x2_dagger.png", 90))
+	populate_inventory()
 
 func _create_grid(width: int, height: int, offset: Vector2) -> Grid:
 	var grid = Grid.new()
@@ -84,6 +77,32 @@ func _make_3x2_rect_top() -> Array:
 		Vector2(0,-1), Vector2(1,-1), Vector2(2,-1), Vector2(3,-1), Vector2(4,-1), Vector2(5,-1),
 		Vector2(4,0), Vector2(5,0), Vector2(4,1), Vector2(5,1)
 	]
+
+func _make_3x1_sage() -> Array:
+	return [
+		Vector2(0,0), Vector2(1,0),
+		Vector2(0,1), Vector2(1,1),
+		Vector2(0,2), Vector2(1,2),
+		Vector2(0,3), Vector2(1,3),
+		Vector2(0,4), Vector2(1,4),
+		Vector2(0,5), Vector2(1,5),
+	]
+
+func _make_2x1_snake() -> Array:
+	return [
+		Vector2(0,0), Vector2(1,0),
+		Vector2(0,1), Vector2(1,1),
+		Vector2(0,2), Vector2(1,2),
+		Vector2(0,3), Vector2(1,3),
+	]
+
+func _make_2x1_eye() -> Array:
+	return [
+		Vector2(0,0), Vector2(1,0), Vector2(2,0), Vector2(3,0),
+		Vector2(0,1), Vector2(1,1), Vector2(2,1), Vector2(3,1),
+	]
+
+
 
 func _make_3x2_rect_bottom() -> Array:
 	# 3x2 rectangle with handle at top (pouches shape)
