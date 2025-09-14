@@ -28,6 +28,9 @@ func _ready():
 	music_player = $Music
 	play_music_random()
 
+func stop_music() -> void:
+	music_player.stop()
+
 ## play a sound from the sfx_library. Set random_pitch to true to add a random pitch variation.
 func play_sound(sound:String,random_pitch:bool) -> void:
 	var sfx = sfx_library.get(sound)

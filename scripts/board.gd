@@ -156,6 +156,7 @@ func _end_drag(pos: Vector2) -> void:
 		if placed_id != "":
 			_reset_drag()
 			if check_for_win():
+				Logic.victory_screen.activate_victory_screen()
 				print("You win!")  # Placeholder for win condition handling
 			return
 
