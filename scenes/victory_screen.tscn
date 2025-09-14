@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtlsbens3gjfi"]
+
+[ext_resource type="Texture2D" uid="uid://cuw7al8eautls" path="res://assets/win_and_next_round.png" id="1_ujlt3"]
+[ext_resource type="Script" uid="uid://3pn1vkjucgob" path="res://scripts/victory_screen.gd" id="1_wdgif"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_pfcnd"]
+
+[node name="VictoryScreen" type="Node2D"]
+script = ExtResource("1_wdgif")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(644, 404)
+scale = Vector2(0.291698, 0.291698)
+texture = ExtResource("1_ujlt3")
+
+[node name="shadow" type="Sprite2D" parent="Sprite2D"]
+modulate = Color(0, 0, 0, 0.203922)
+show_behind_parent = true
+material = SubResource("CanvasItemMaterial_pfcnd")
+position = Vector2(9.615, 18.4692)
+scale = Vector2(1.1, 1.07167)
+texture = ExtResource("1_ujlt3")
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

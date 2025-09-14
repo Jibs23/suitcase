@@ -19,7 +19,7 @@ func stop_timer() -> void:
 
 func reset_timer() -> void:
 	timer = 0.0
-	text = "0.00"
+	text = "00:00.00"
 	visible = false
 
 func _process(delta: float) -> void:
