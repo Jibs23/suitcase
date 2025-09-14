@@ -9,12 +9,6 @@
 [node name="VictoryScreen" type="Node2D"]
 script = ExtResource("1_wdgif")
 
-[node name="Glitter" parent="." instance=ExtResource("2_pfcnd")]
-position = Vector2(580, 258)
-
-[node name="Glitter2" parent="." instance=ExtResource("2_pfcnd")]
-position = Vector2(781, 552)
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(644, 404)
 scale = Vector2(0.291698, 0.291698)
@@ -27,3 +21,9 @@ material = SubResource("CanvasItemMaterial_pfcnd")
 position = Vector2(9.615, 18.4692)
 scale = Vector2(1.1, 1.07167)
 texture = ExtResource("1_ujlt3")
+
+[node name="Glitter" parent="." instance=ExtResource("2_pfcnd")]
+position = Vector2(580, 258)
+
+[node name="Glitter2" parent="." instance=ExtResource("2_pfcnd")]
+position = Vector2(781, 552)
