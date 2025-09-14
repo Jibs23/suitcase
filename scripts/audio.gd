@@ -7,7 +7,8 @@ var sfx_library: Dictionary = {
 	"item_pickup": preload("res://Audio/SFX/item_pickup.wav"),
 	"item_drop": preload("res://Audio/SFX/item_drop.wav"),
 	"error": preload("res://Audio/SFX/error.wav"),
-	"paper": preload("res://Audio/SFX/paper.wav")
+	"paper": preload("res://Audio/SFX/paper.wav"),
+	"victory": preload("res://Audio/SFX/victory.wav")
 }
 
 var music_player: AudioStreamPlayer
