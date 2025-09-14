@@ -112,7 +112,7 @@ func _input(event: InputEvent) -> void:
 			_start_drag(event.position)
 		else:
 			_end_drag(event.position)
-	elif event is InputEventKey and event.keycode == KEY_U and event.pressed:
+	elif event is InputEventKey and event.keycode == KEY_R and event.pressed:
 		_rotate_dragging_item()
 
 	elif event is InputEventMouseMotion:
