@@ -1,16 +1,17 @@
 [remap]
 
 importer="texture"
-uid="uid://bf3veiny4oeha"
-path="res://.godot/imported/title.PNG-33071d8bfd439ae1f9567f75343629ee.ctex"
+type="CompressedTexture2D"
+uid="uid://bb06nw4hmo5ll"
+path="res://.godot/imported/star1.png-4f388e63741c6c291a17feb70d71a395.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/title.PNG"
-dest_files=["res://.godot/imported/title.PNG-33071d8bfd439ae1f9567f75343629ee.ctex"]
+source_file="res://assets/Star_s/star1.png"
+dest_files=["res://.godot/imported/star1.png-4f388e63741c6c291a17feb70d71a395.ctex"]
 
 [params]
 
