@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr17chcxu41lu"
-path="res://.godot/imported/4x2_pearls_coins.png-40103bbf6d33ae412b68e550838baa12.ctex"
+uid="uid://cs6edqo0sxrtd"
+path="res://.godot/imported/win_and_next_round.png-756bc2fa6e184a07722f664ad08401b1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/noBGAssets/4x2_pearls_coins.png"
-dest_files=["res://.godot/imported/4x2_pearls_coins.png-40103bbf6d33ae412b68e550838baa12.ctex"]
+source_file="res://assets/win_and_next_round.png"
+dest_files=["res://.godot/imported/win_and_next_round.png-756bc2fa6e184a07722f664ad08401b1.ctex"]
 
 [params]
 
