@@ -31,7 +31,7 @@ func _ready() -> void:
 	inventory_grid.add_item("Coins", Vector2(0, 0), _create_item("Coins", _make_2x2_square(), "res://assets/noBGAssets/1x1_coins.png"))
 	inventory_grid.add_item("FireJar", Vector2(2, 0), _create_item("FireJar", _make_2x2_square(), "res://assets/noBGAssets/1x1_fireJar.png"))
 	inventory_grid.add_item("Pouches", Vector2(4, 0), _create_item("Pouches", _make_3x2_rect_bottom(), "res://assets/noBGAssets/3x2_pouches.png", 90))
-	inventory_grid.add_item("Pearls", Vector2(6, 0), _create_item("Pearls", _make_4x2_pearls(), "res://assets/noBGAssets/4x2_pearls.png"))
+	inventory_grid.add_item("Pearls", Vector2(6, 0), _create_item("Pearls", _make_4x2_pearls(), "res://assets/noBGAssets/4x2_pearls_coins.png"))
 	inventory_grid.add_item("Axe", Vector2(0, 2), _create_item("Axe", _make_4x2_axe(), "res://assets/noBGAssets/4x2_axe.png", 0))
 	inventory_grid.add_item("Mushrooms", Vector2(2, 8), _create_item("Mushrooms", _make_2x2_L(), "res://assets/noBGAssets/2x2_L_mushrooms.png"))
 	inventory_grid.add_item("Dagger", Vector2(4, 6), _create_item("Dagger", _make_3x2_rect_top(), "res://assets/noBGAssets/3x2_dagger.png", 90))
